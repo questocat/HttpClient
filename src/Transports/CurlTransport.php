@@ -258,9 +258,8 @@ class CurlTransport extends AbstractTransport
         return array(
             'status' => $results['curl_info']['http_code'],
             'headers' => $this->splitHeaders($header),
-            'content_type' => $results['curl_info']['content_type'],
-            'curl_info' => $results['curl_info'],
-            'data' => $body
+            'data' => $body,
+            'curl_info' => $results['curl_info']
         );
     }
 

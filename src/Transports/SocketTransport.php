@@ -121,24 +121,24 @@ class SocketTransport extends AbstractTransport
             throw new UnexpectedValueException('No content in response.');
         }
 
-        $return = new \stdClass();
+        $result = new \stdClass();
         $response = explode("\r\n\r\n", $content, 2);
         $headers = explode("\r\n", $response[0]);
-        $return->body = empty($response[1]) ? '' : $response[1];
+        $result->body = empty($response[1]) ? '' : $response[1];
         preg_match('/[0-9]{3}/', array_shift($headers), $matches);
         $code = $matches[0];
         if (is_numeric($code)) {
-            $return->code = (int)$code;
+            $result->code = (int)$code;
         } else {
             throw new ResponseException('No HTTP response code found.');
         }
 
         foreach ($headers as $header) {
             $pos = strpos($header, ':');
-            $return->headers[trim(substr($header, 0, $pos))] = trim(substr($header, ($pos + 1)));
+            $result->headers[trim(substr($header, 0, $pos))] = trim(substr($header, ($pos + 1)));
         }
 
-        return $return;
+        return $result;
     }
 
     /**
