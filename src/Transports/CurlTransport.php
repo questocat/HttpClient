@@ -1,0 +1,386 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * Author: PhilPu <zhengchaopu@gmail.com>
+ * Date: 2016/10/13
+ */
+namespace HttpClient\Transports;
+
+use HttpClient\AbstractTransport;
+use HttpClient\Exceptions\ResponseException;
+use HttpClient\Uri\UriInterface;
+use HttpClient\Utils\Json;
+use HttpClient\Utils\Str;
+use RuntimeException;
+use InvalidArgumentException;
+use Exception;
+use CURLFile;
+
+/**
+ * Class CurlTransport
+ * @package HttpClient\Transports
+ */
+class CurlTransport extends AbstractTransport
+{
+    /**
+     * Constants for available cURL HTTP methods
+     */
+    const HTTP_PUT = 'PUT';
+    const HTTP_PATCH = 'PATCH';
+    const HTTP_DELETE = 'DELETE';
+    const HTTP_HEAD = 'HEAD';
+
+    /**
+     * The cURL handle.
+     * @var null|resource
+     */
+    protected $ch = null;
+
+    /**
+     * CurlTransport constructor.
+     * @param array $config
+     */
+    public function __construct(array $config = array())
+    {
+        if (!$this->isSupportedTransport()) {
+            throw new RuntimeException('Cannot use a cURL transport when curl_version() is not available.');
+        }
+
+        $this->ch = curl_init();
+        $this->registerOptions($config);
+    }
+
+    /**
+     * Clean up the cURL handle.
+     */
+    public function __destruct()
+    {
+        if (is_resource($this->ch)) {
+            curl_close($this->ch);
+        }
+    }
+
+    /**
+     * Register request options.
+     * @param array $options
+     */
+    protected function registerOptions(array $options)
+    {
+        $defaults = array(
+            'media' => 'json',
+            'timeout' => 30,
+            'verify' => true,
+            'headers' => array(
+                'User-Agent' => 'CurlTransport/1.0.1'
+            )
+        );
+
+        $this->requestOptions = array_merge_recursive($defaults, $options);
+    }
+
+    /**
+     * Make a HTTP PUT request.
+     * @param $url
+     * @param array $put_params
+     * @param array $options
+     * @return array
+     */
+    public function put($url, $put_params = array(), array $options = array())
+    {
+        return $this->request(self::HTTP_PUT, $url, $put_params, $options);
+    }
+
+    /**
+     * Make a HTTP PATCH request.
+     * @param $url
+     * @param array $patch_params
+     * @param array $options
+     * @return array
+     */
+    public function patch($url, $patch_params = array(), array $options = array())
+    {
+        return $this->request(self::HTTP_PATCH, $url, $patch_params, $options);
+    }
+
+    /**
+     * Make a HTTP DELETE request.
+     * @param $url
+     * @param array $delete_params
+     * @param array $options
+     * @return array
+     */
+    public function delete($url, $delete_params = array(), $options = array())
+    {
+        return $this->request(self::HTTP_DELETE, $url, $delete_params, $options);
+    }
+
+    /**
+     * Make a HTTP HEAD request.
+     * @param $url
+     * @param array $head_params
+     * @param array $options
+     * @return array
+     */
+    public function head($url, $head_params = array(), $options = array())
+    {
+        return $this->request(self::HTTP_HEAD, $url, $head_params, $options);
+    }
+
+    /**
+     * @param $url
+     * @param $method
+     * @param $params
+     * @return string
+     */
+    protected function prepareForUrl($url, $method, &$params)
+    {
+        if (in_array($method, array(self::HTTP_GET, self::HTTP_HEAD, self::HTTP_DELETE), true)) {
+            if (!empty($params) && is_array($params)) {
+                $url .= (strpos($url, '?') ? '&' : '?') . http_build_query($params);
+                $params = array();
+            }
+        }
+
+        return $url;
+    }
+
+    /**
+     * Build HTTP request params.
+     * @param $params
+     * @param array $options
+     * @return string
+     */
+    protected function prepareBuildParams($params, array $options)
+    {
+        if (!empty($params) && is_array($params)) {
+            if ($options['media'] === 'json') {
+                $params = Json::encode($params);
+            } elseif ($options['media'] === 'urlencoded') {
+                $params = http_build_query($params);
+            }
+        }
+
+        return $params;
+    }
+
+    /**
+     * Send a request to the server and return a Response object with the response.
+     * @param $method
+     * @param $uri
+     * @param $params
+     * @return array
+     * @throws ResponseException
+     */
+    protected function retrieveResponse($method, UriInterface $uri, $params)
+    {
+        $options = $this->requestOptions;
+        $url = $this->prepareForUrl($uri->getAbsoluteUri(), $method, $params);
+        $params = $this->prepareBuildParams($params, $options);
+
+        $optionConf = array(
+            CURLOPT_URL => $url,
+            CURLOPT_HEADER => true,  // 启用时会将头文件的信息作为数据流输出
+            CURLOPT_RETURNTRANSFER => true,  // 将curl_exec()获取的信息以文件流的形式返回，而不是直接输出
+            CURLOPT_CUSTOMREQUEST => $method,
+            CURLOPT_TIMEOUT => $options['timeout']
+        );
+
+        /**
+         * About timeout.
+         * http://zccst.iteye.com/blog/1845958
+         * http://www.cnblogs.com/sky20081816/archive/2013/05/30/3108657.html
+         */
+        if (false === $options['verify']) {
+            $optionConf[CURLOPT_SSL_VERIFYPEER] = false;
+            $optionConf[CURLOPT_SSL_VERIFYHOST] = 0;
+        } else {
+            $optionConf[CURLOPT_SSL_VERIFYPEER] = true;
+            $optionConf[CURLOPT_SSL_VERIFYHOST] = 2;
+            if (is_string($options['verify'])) {
+                if (!file_exists($options['verify'])) {
+                    throw new InvalidArgumentException(
+                        "SSL CA bundle not found: {$options['verify']}"
+                    );
+                }
+                $optionConf[CURLOPT_CAINFO] = $options['verify'];
+            }
+        }
+
+        // 使用证书情况
+        if (isset($options['ssl_cert_path']) && isset($options['ssl_key_path'])) {
+            $sslCert = $options['ssl_cert_path'];
+            if (!file_exists($sslCert)) {
+                throw new InvalidArgumentException(
+                    "SSL certificate not found: {$sslCert}"
+                );
+            }
+            $sslKey = $options['ssl_key_path'];
+            if (!file_exists($sslKey)) {
+                throw new InvalidArgumentException(
+                    "SSL private key not found: {$sslKey}"
+                );
+            }
+            // 设置证书
+            // 使用证书：cert 与 key 分别属于两个.pem文件
+            $optionConf[CURLOPT_SSLCERTTYPE] = 'PEM';
+            $optionConf[CURLOPT_SSLCERT] = $options['ssl_cert_path'];
+            $optionConf[CURLOPT_SSLKEYTYPE] = 'PEM';
+            $optionConf[CURLOPT_SSLKEY] = $options['ssl_key_path'];
+        }
+
+        $method = 'set' . Str::studly($method) . 'OptionConf';
+
+        if (method_exists($this, $method)) {
+            $this->{$method}($params, $options, $optionConf);
+        }
+
+        if ($options['media'] === 'json') {
+            $options['headers']['Content-Type'] = 'application/json';
+        }
+
+        $headers = $this->uniteHeaders($options['headers']);
+        $optionConf[CURLOPT_HTTPHEADER] = $headers;
+
+        // Check for basic auth.
+        if (isset($options['auth']['type']) && 'basic' === $options['auth']['type']) {
+            $optionConf[CURLOPT_USERPWD] = $options['auth']['username'] . ':' . $options['auth']['password'];
+        }
+
+        curl_setopt_array($this->ch, $optionConf);
+        $results = $this->execCurl();
+
+        // Separate headers and body.
+        $headerSize = $results['curl_info']['header_size'];
+        $header = trim(substr($results['response'], 0, $headerSize));
+        $body = trim(substr($results['response'], $headerSize));
+
+        // Assemble the result.
+        return array(
+            'status' => $results['curl_info']['http_code'],
+            'headers' => $this->splitHeaders($header),
+            'content_type' => $results['curl_info']['content_type'],
+            'curl_info' => $results['curl_info'],
+            'data' => $body
+        );
+    }
+
+    /**
+     * Setting cURL option for HTTP POST request.
+     * @param $params
+     * @param array $options
+     * @param $optionConf
+     * @throws Exception
+     */
+    private function setPostOptionConf($params, array $options, &$optionConf)
+    {
+        // Check for files and upload files
+        if (isset($options['files'])) {
+            $files = $options['files'];
+            if (!is_array($files) || !count($files)) {
+                throw new Exception("Files must be an array and can't be empty");
+            }
+            unset($params);
+            foreach ($files as $index => $file) {
+                $params[$index] = $this->createCurlFile($file);
+            }
+        }
+
+        $optionConf[CURLOPT_POST] = true;
+        $optionConf[CURLOPT_POSTFIELDS] = $params;
+    }
+
+    /**
+     * Setting cURL option for HTTP PUT request.
+     * @param $params
+     * @param array $options
+     * @param $optionConf
+     */
+    private function setPutOptionConf($params, array $options, &$optionConf)
+    {
+        if (isset($options['files'])) {
+            $filename = $options['files'];
+            $fp = fopen($filename, 'r');
+            $optionConf[CURLOPT_PUT] = true;
+            $optionConf[CURLOPT_INFILE] = $fp;
+            $optionConf[CURLOPT_INFILESIZE] = filesize($filename);
+        } else {
+            $optionConf[CURLOPT_POST] = true;
+            $optionConf[CURLOPT_POSTFIELDS] = $params;
+        }
+    }
+
+    /**
+     * Setting cURL option for HTTP PATCH request.
+     * @param $params
+     * @param array $options
+     * @param $optionConf
+     */
+    private function setPatchOptionConf($params, array $options, &$optionConf)
+    {
+        $optionConf[CURLOPT_POST] = true;
+        $optionConf[CURLOPT_POSTFIELDS] = $params;
+    }
+
+    /**
+     * Make curl file.
+     * http://php.net/manual/zh/class.curlfile.php
+     * @param $filename
+     * @return \CURLFile|string
+     */
+    protected function createCurlFile($filename)
+    {
+        if (class_exists('\CURLFile')) {
+            return new CURLFile($filename);
+        }
+
+        return "@$filename;filename=" . basename($filename);
+    }
+
+    /**
+     * Do execute cURL.
+     * @return array
+     * @throws \Exception
+     */
+    protected function execCurl()
+    {
+        $response = curl_exec($this->ch);
+        $curlInfo = curl_getinfo($this->ch);
+        $responseCode = $curlInfo['http_code'];
+
+        if (false === $response || $responseCode != 200) {
+            $err_no = curl_errno($this->ch);
+            $error = curl_error($this->ch);
+
+            if (empty($error)) {
+                throw new ResponseException('Failed to request resource.', $responseCode);
+            }
+
+            throw new ResponseException("cURL Error # {$err_no}: " . $error, $responseCode);
+        }
+
+        return array(
+            'response' => $response,
+            'curl_info' => $curlInfo
+        );
+    }
+
+    /**
+     * Method to check if HTTP transport curl is available for use.
+     * @return bool
+     */
+    public function isSupportedTransport()
+    {
+        return function_exists('curl_version') && curl_version();
+    }
+
+    /**
+     * The Supported for cURL HTTP requests.
+     * @return array
+     */
+    public function isSupportedHttpRequest()
+    {
+        return array(
+            self::HTTP_GET, self::HTTP_POST, self::HTTP_PATCH, self::HTTP_PUT, self::HTTP_DELETE, self::HTTP_HEAD
+        );
+    }
+}
