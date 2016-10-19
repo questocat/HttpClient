@@ -39,7 +39,7 @@ class JsonException extends Exception
             ? self::$messages[$code]
             : 'Unknown Error';
 
-        $message = !empty($message) ? $message . " #{$code}: " . $error_msg : $error_msg;
+        $message = !empty($message) ? $message." #{$code}: ".$error_msg : $error_msg;
 
         parent::__construct($message, $code, $previous);
     }

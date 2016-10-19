@@ -106,18 +106,18 @@ class Uri implements UriInterface
      */
     public function getAbsoluteUri()
     {
-        $uri = $this->scheme . '://' . $this->getAuthority();
+        $uri = $this->scheme.'://'.$this->getAuthority();
 
         if (!empty($this->path)) {
             $uri .= $this->path;
         }
 
         if (!empty($this->query)) {
-            $uri .= '?' . $this->query;
+            $uri .= '?'.$this->query;
         }
 
         if (!empty($this->fragment)) {
-            $uri .= '#' . $this->fragment;
+            $uri .= '#'.$this->fragment;
         }
 
         return $uri;
@@ -140,7 +140,7 @@ class Uri implements UriInterface
         $host = $this->getHost();
         $port = $this->getPort();
 
-        return ($userInfo ? $userInfo . '@' : '') . $host . ($port ? ':' . $port : '');
+        return ($userInfo ? $userInfo.'@' : '').$host.($port ? ':'.$port : '');
     }
 
     /**
@@ -148,7 +148,7 @@ class Uri implements UriInterface
      */
     public function getUserInfo()
     {
-        return $this->user . ($this->pass ? ':' . $this->pass : '');
+        return $this->user.($this->pass ? ':'.$this->pass : '');
     }
 
     /**
@@ -300,17 +300,21 @@ class Uri implements UriInterface
      * @param array $parts
      * @return array
      */
-    public function getMultiParts(array $parts = array('scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment'))
-    {
+    public function getMultiParts(
+        array $parts = array('scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment')
+    ) {
         $uri = '';
-        $uri .= in_array('scheme', $parts) ? (!empty($this->scheme) ? $this->scheme . '://' : '') : '';
+        $uri .= in_array('scheme', $parts) ? (!empty($this->scheme) ? $this->scheme.'://' : '') : '';
         $uri .= in_array('user', $parts) ? $this->user : '';
-        $uri .= in_array('pass', $parts) ? (!empty($this->pass) ? ':' : '') . $this->pass . (!empty($this->user) ? '@' : '') : '';
+        $uri .= in_array(
+            'pass',
+            $parts
+        ) ? (!empty($this->pass) ? ':' : '').$this->pass.(!empty($this->user) ? '@' : '') : '';
         $uri .= in_array('host', $parts) ? $this->host : '';
-        $uri .= in_array('port', $parts) ? (!empty($this->port) ? ':' : '') . $this->port : '';
+        $uri .= in_array('port', $parts) ? (!empty($this->port) ? ':' : '').$this->port : '';
         $uri .= in_array('path', $parts) ? $this->path : '';
-        $uri .= in_array('query', $parts) ? (!empty($this->query) ? '?' . $this->query : '') : '';
-        $uri .= in_array('fragment', $parts) ? (!empty($this->fragment) ? '#' . $this->fragment : '') : '';
+        $uri .= in_array('query', $parts) ? (!empty($this->query) ? '?'.$this->query : '') : '';
+        $uri .= in_array('fragment', $parts) ? (!empty($this->fragment) ? '#'.$this->fragment : '') : '';
 
         return $uri;
     }
@@ -321,16 +325,19 @@ class Uri implements UriInterface
      */
     protected function getUriParts(array $parts)
     {
-        $parts = array_replace(array(
-            'scheme' => '',
-            'user' => '',
-            'pass' => '',
-            'host' => '',
-            'port' => '',
-            'path' => '',
-            'query' => '',
-            'fragment' => ''
-        ), $parts);
+        $parts = array_replace(
+            array(
+                'scheme' => '',
+                'user' => '',
+                'pass' => '',
+                'host' => '',
+                'port' => '',
+                'path' => '',
+                'query' => '',
+                'fragment' => '',
+            ),
+            $parts
+        );
 
         if (empty($parts['port'])) {
             $parts['port'] = $this->getPortByScheme($parts['scheme']);
@@ -354,7 +361,7 @@ class Uri implements UriInterface
      */
     public function __toString()
     {
-        $uri = $this->scheme . '://' . $this->getAuthority();
+        $uri = $this->scheme.'://'.$this->getAuthority();
 
         if ('/' === $this->path) {
             $uri .= $this->explicitTrailingHostSlash ? '/' : '';

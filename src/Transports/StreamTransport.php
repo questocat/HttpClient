@@ -40,11 +40,12 @@ class StreamTransport extends AbstractTransport
             'timeout' => 30,
             'max_redirects' => 5,
             'headers' => array(
-                'User-Agent' => 'StreamTransport/1.0.1'
-            )
+                'User-Agent' => 'StreamTransport/1.0.1',
+            ),
         );
 
-        $this->requestOptions = array_merge_recursive($defaults, $options);
+        $options = array_merge_recursive($defaults, $options);
+        $this->setOptions($options);
     }
 
     /**
@@ -57,7 +58,7 @@ class StreamTransport extends AbstractTransport
      */
     protected function retrieveResponse($method, UriInterface $uri, $params)
     {
-        $options = $this->requestOptions;
+        $options = $this->getOptions();
         $params = is_array($params) ? http_build_query($params, '', '&') : $params;
 
         // Add the relevant headers.
@@ -74,7 +75,7 @@ class StreamTransport extends AbstractTransport
             $lastError = error_get_last();
             if (is_null($lastError)) {
                 throw new ResponseException(
-                    'Failed to request resource. HTTP Code: ' .
+                    'Failed to request resource. HTTP Code: '.
                     (isset($http_response_header[0]) ? $http_response_header[0] : 'No response')
                 );
             }
@@ -95,7 +96,8 @@ class StreamTransport extends AbstractTransport
      */
     private function createStreamContext($method, $headers, $body, $options)
     {
-        return stream_context_create(array(
+        return stream_context_create(
+            array(
                 'http' => array(
                     'method' => $method,
                     'header' => implode("\r\n", array_values($headers)),
@@ -103,7 +105,7 @@ class StreamTransport extends AbstractTransport
                     'protocol_version' => '1.1',
                     'user_agent' => $options['headers']['User-Agent'],
                     'max_redirects' => $options['max_redirects'],
-                    'timeout' => $options['timeout']
+                    'timeout' => $options['timeout'],
                 ),
             )
         );

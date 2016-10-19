@@ -71,11 +71,12 @@ class CurlTransport extends AbstractTransport
             'timeout' => 30,
             'verify' => true,
             'headers' => array(
-                'User-Agent' => 'CurlTransport/1.0.1'
-            )
+                'User-Agent' => 'CurlTransport/1.0.1',
+            ),
         );
 
-        $this->requestOptions = array_merge_recursive($defaults, $options);
+        $options = array_merge_recursive($defaults, $options);
+        $this->setOptions($options);
     }
 
     /**
@@ -136,7 +137,7 @@ class CurlTransport extends AbstractTransport
     {
         if (in_array($method, array(self::HTTP_GET, self::HTTP_HEAD, self::HTTP_DELETE), true)) {
             if (!empty($params) && is_array($params)) {
-                $url .= (strpos($url, '?') ? '&' : '?') . http_build_query($params);
+                $url .= (strpos($url, '?') ? '&' : '?').http_build_query($params);
                 $params = array();
             }
         }
@@ -173,7 +174,7 @@ class CurlTransport extends AbstractTransport
      */
     protected function retrieveResponse($method, UriInterface $uri, $params)
     {
-        $options = $this->requestOptions;
+        $options = $this->getOptions();
         $url = $this->prepareForUrl($uri->getAbsoluteUri(), $method, $params);
         $params = $this->prepareBuildParams($params, $options);
 
@@ -182,7 +183,7 @@ class CurlTransport extends AbstractTransport
             CURLOPT_HEADER => true,  // 启用时会将头文件的信息作为数据流输出
             CURLOPT_RETURNTRANSFER => true,  // 将curl_exec()获取的信息以文件流的形式返回，而不是直接输出
             CURLOPT_CUSTOMREQUEST => $method,
-            CURLOPT_TIMEOUT => $options['timeout']
+            CURLOPT_TIMEOUT => $options['timeout'],
         );
 
         /**
@@ -228,7 +229,7 @@ class CurlTransport extends AbstractTransport
             $optionConf[CURLOPT_SSLKEY] = $options['ssl_key_path'];
         }
 
-        $method = 'set' . Str::studly($method) . 'OptionConf';
+        $method = 'set'.Str::studly($method).'OptionConf';
 
         if (method_exists($this, $method)) {
             $this->{$method}($params, $options, $optionConf);
@@ -243,7 +244,7 @@ class CurlTransport extends AbstractTransport
 
         // Check for basic auth.
         if (isset($options['auth']['type']) && 'basic' === $options['auth']['type']) {
-            $optionConf[CURLOPT_USERPWD] = $options['auth']['username'] . ':' . $options['auth']['password'];
+            $optionConf[CURLOPT_USERPWD] = $options['auth']['username'].':'.$options['auth']['password'];
         }
 
         curl_setopt_array($this->ch, $optionConf);
@@ -258,8 +259,8 @@ class CurlTransport extends AbstractTransport
         return array(
             'status' => $results['curl_info']['http_code'],
             'headers' => $this->splitHeaders($header),
+            'curl_info' => $results['curl_info'],
             'data' => $body,
-            'curl_info' => $results['curl_info']
         );
     }
 
@@ -272,7 +273,6 @@ class CurlTransport extends AbstractTransport
      */
     private function setPostOptionConf($params, array $options, &$optionConf)
     {
-        // Check for files and upload files
         if (isset($options['files'])) {
             $files = $options['files'];
             if (!is_array($files) || !count($files)) {
@@ -332,7 +332,7 @@ class CurlTransport extends AbstractTransport
             return new CURLFile($filename);
         }
 
-        return "@$filename;filename=" . basename($filename);
+        return "@$filename;filename=".basename($filename);
     }
 
     /**
@@ -354,12 +354,12 @@ class CurlTransport extends AbstractTransport
                 throw new ResponseException('Failed to request resource.', $responseCode);
             }
 
-            throw new ResponseException("cURL Error # {$err_no}: " . $error, $responseCode);
+            throw new ResponseException("cURL Error # {$err_no}: ".$error, $responseCode);
         }
 
         return array(
             'response' => $response,
-            'curl_info' => $curlInfo
+            'curl_info' => $curlInfo,
         );
     }
 
@@ -379,7 +379,12 @@ class CurlTransport extends AbstractTransport
     public function isSupportedHttpRequest()
     {
         return array(
-            self::HTTP_GET, self::HTTP_POST, self::HTTP_PATCH, self::HTTP_PUT, self::HTTP_DELETE, self::HTTP_HEAD
+            self::HTTP_GET,
+            self::HTTP_POST,
+            self::HTTP_PATCH,
+            self::HTTP_PUT,
+            self::HTTP_DELETE,
+            self::HTTP_HEAD,
         );
     }
 }

@@ -26,11 +26,18 @@ if (!function_exists('getallheaders')) {
      */
     function getallheaders()
     {
-        array_walk($_SERVER, function ($value, $name) use (&$headers) {
-            if (substr($name, 0, 5) == 'HTTP_') {
-                $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+        array_walk(
+            $_SERVER,
+            function ($value, $name) use (&$headers) {
+                if (substr($name, 0, 5) == 'HTTP_') {
+                    $headers[str_replace(
+                        ' ',
+                        '-',
+                        ucwords(strtolower(str_replace('_', ' ', substr($name, 5))))
+                    )] = $value;
+                }
             }
-        });
+        );
 
         return $headers;
     }

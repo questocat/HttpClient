@@ -30,7 +30,7 @@ class HttpManager
     protected $supportedTransports = array(
         'curl' => 'Curl',
         'socket' => 'Socket',
-        'stream' => 'Stream'
+        'stream' => 'Stream',
     );
 
     /**
@@ -65,7 +65,8 @@ class HttpManager
     {
         if (isset($this->supportedTransports[$transport])) {
             $transport = $this->supportedTransports[$transport];
-            $transportFullPath = __NAMESPACE__ . '\\Transports\\' . $transport . 'Transport';
+            $transportFullPath = __NAMESPACE__.'\\Transports\\'.$transport.'Transport';
+
             return $this->buildTransport($transportFullPath, $this->config);
         }
 

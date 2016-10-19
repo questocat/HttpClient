@@ -47,11 +47,12 @@ class SocketTransport extends AbstractTransport
         $defaults = array(
             'timeout' => 30,
             'headers' => array(
-                'User-Agent' => 'SocketTransport/1.0.1'
-            )
+                'User-Agent' => 'SocketTransport/1.0.1',
+            ),
         );
 
-        $this->requestOptions = array_merge_recursive($defaults, $options);
+        $options = array_merge_recursive($defaults, $options);
+        $this->setOptions($options);
     }
 
     /**
@@ -64,7 +65,7 @@ class SocketTransport extends AbstractTransport
      */
     protected function retrieveResponse($method, UriInterface $uri, $params)
     {
-        $options = $this->requestOptions;
+        $options = $this->getOptions();
         $fp = $this->connect($uri, $options['timeout']);
         if (is_resource($fp)) {
             $meta = stream_get_meta_data($fp);
@@ -78,19 +79,21 @@ class SocketTransport extends AbstractTransport
         $data = is_array($params) ? http_build_query($params) : $params;
 
         $path = $uri->getMultiParts(array('path', 'query'));
-        $request_method = $method . ' ' . ((empty($path)) ? '/' : $path);
-        if (!empty($data)) $request_method .= '?' . $data;
+        $request_method = $method.' '.((empty($path)) ? '/' : $path);
+        if (!empty($data)) {
+            $request_method .= '?'.$data;
+        }
         $request_method .= ' HTTP/1.0';
         $headers[] = $request_method;
-        $headers[] = 'Host:' . $uri->getHost();
+        $headers[] = 'Host:'.$uri->getHost();
 
         if (!isset($options['headers']['Authorization']) && $userInfo = $uri->getUserInfo()) {
-            $options['headers']['Authorization'] = 'Basic ' . base64_encode($userInfo);
+            $options['headers']['Authorization'] = 'Basic '.base64_encode($userInfo);
         }
 
         $headers = array_merge_recursive($headers, $this->uniteHeaders($options['headers']));
 
-        fputs($fp, implode("\r\n", $headers) . "\r\n\r\n");
+        fputs($fp, implode("\r\n", $headers)."\r\n\r\n");
 
         $content = '';
         while (!feof($fp)) {
@@ -149,9 +152,9 @@ class SocketTransport extends AbstractTransport
      */
     protected function connect(UriInterface $uri, $timeout = null)
     {
-        $host = $uri->isSsl() ? 'ssl://' . $uri->getHost() : $uri->getHost();
+        $host = $uri->isSsl() ? 'ssl://'.$uri->getHost() : $uri->getHost();
         $port = $uri->getPort();
-        $key = md5($host . $port);
+        $key = md5($host.$port);
 
         if (!empty($this->handles[$key]) && is_resource($this->handles[$key])) {
             $meta = stream_get_meta_data($this->handles[$key]);

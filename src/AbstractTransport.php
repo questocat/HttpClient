@@ -30,12 +30,16 @@ abstract class AbstractTransport implements TransportInterface
     const HTTP_GET = 'GET';
     const HTTP_POST = 'POST';
 
-    const VERSION = '1.0';
+    /**
+     * version
+     */
+    const VERSION = '1.0.0';
 
     /**
-     * @var array
+     * Collection request options
+     * @var
      */
-    protected $requestOptions = array();
+    private $options;
 
     /**
      * Make a HTTP GET request.
@@ -101,19 +105,29 @@ abstract class AbstractTransport implements TransportInterface
     }
 
     /**
+     * Get the request options
+     * @return Collection
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
      * Set option value.
      * @param $option
      * @param null $value
      * @return $this
      */
-    public function setOpt($option, $value = null)
+    public function setOptions($option, $value = null)
     {
         foreach ($this->parseOption($option, $value) as $option => $value) {
-            $this->requestOptions[$option] = $value;
+            $this->options[$option] = $value;
         }
     }
 
     /**
+     * Parse the option.
      * @param $option
      * @param $value
      * @return array
@@ -133,9 +147,12 @@ abstract class AbstractTransport implements TransportInterface
     {
         $input = $this->getExpectOptions($input, $options);
 
-        array_walk($input, function ($value, $key) use (&$arr) {
-            $arr[] = $key ? $key . ':' . $value : $value;
-        });
+        array_walk(
+            $input,
+            function ($value, $key) use (&$arr) {
+                $arr[] = $key ? $key.':'.$value : $value;
+            }
+        );
 
         return $arr;
     }
@@ -184,7 +201,8 @@ abstract class AbstractTransport implements TransportInterface
     public function isSupportedHttpRequest()
     {
         return array(
-            self::HTTP_GET, self::HTTP_POST
+            self::HTTP_GET,
+            self::HTTP_POST,
         );
     }
 }
