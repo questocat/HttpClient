@@ -18,13 +18,6 @@ use InvalidArgumentException;
 abstract class AbstractTransport implements TransportInterface
 {
     /**
-     * Contracts
-     * GET, DELETE, HEAD 方法, 参数风格为标准的 GET 风格的参数，如 url?a=1&b=2
-     * POST, PUT, PATCH, OPTION 方法, 默认情况下请求实体会被视作标准 json 字符串进行处理, 当然, 依旧推荐设置头信息的 Content-Type 为 application/json
-     * 在一些特殊接口中（会在文档中说明）, 可能允许 Content-Type 为 application/x-www-form-urlencoded 或者 multipart/form-data, 此时请求实体会被视作标准 POST 风格的参数进行处理
-     */
-
-    /**
      * Constants for available HTTP methods
      */
     const HTTP_GET = 'GET';
@@ -90,7 +83,7 @@ abstract class AbstractTransport implements TransportInterface
             throw new InvalidArgumentException("The Http [$method] request not available.");
         }
 
-        $this->requestOptions = array_merge_recursive($this->requestOptions, $options);
+        $this->setOptions(array_merge_recursive($this->options, $options));
 
         // Convert to a Uri object if we were given a string.
         if (is_string($url)) {
