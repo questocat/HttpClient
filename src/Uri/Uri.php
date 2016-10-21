@@ -10,8 +10,9 @@ use InvalidArgumentException;
 
 /**
  * Class Uri
+ *
  * @package HttpClient\Uri
- * @link http://www.faqs.org/rfcs/rfc3986.html
+ * @link    http://www.faqs.org/rfcs/rfc3986.html
  */
 class Uri implements UriInterface
 {
@@ -62,6 +63,7 @@ class Uri implements UriInterface
 
     /**
      * Uri constructor.
+     *
      * @param null $uri
      */
     public function __construct($uri = null)
@@ -73,6 +75,7 @@ class Uri implements UriInterface
 
     /**
      * @param $uri
+     *
      * @throws InvalidArgumentException
      */
     protected function parseUri($uri)
@@ -193,6 +196,7 @@ class Uri implements UriInterface
 
     /**
      * @param $scheme
+     *
      * @return mixed
      */
     public function setScheme($scheme)
@@ -205,6 +209,7 @@ class Uri implements UriInterface
     /**
      * @param $user
      * @param string $pass
+     *
      * @return $this
      */
     public function setUserInfo($user, $pass = null)
@@ -217,6 +222,7 @@ class Uri implements UriInterface
 
     /**
      * @param $host
+     *
      * @return mixed
      */
     public function setHost($host)
@@ -228,6 +234,7 @@ class Uri implements UriInterface
 
     /**
      * @param $port
+     *
      * @return mixed
      */
     public function setPort($port)
@@ -239,6 +246,7 @@ class Uri implements UriInterface
 
     /**
      * @param $path
+     *
      * @return mixed
      */
     public function setPath($path)
@@ -250,6 +258,7 @@ class Uri implements UriInterface
 
     /**
      * @param $query
+     *
      * @return mixed
      */
     public function setQuery($query)
@@ -261,6 +270,7 @@ class Uri implements UriInterface
 
     /**
      * @param $fragment
+     *
      * @return mixed
      */
     public function setFragment($fragment)
@@ -280,6 +290,7 @@ class Uri implements UriInterface
 
     /**
      * @param $scheme
+     *
      * @return int
      */
     public function getPortByScheme($scheme)
@@ -297,7 +308,9 @@ class Uri implements UriInterface
 
     /**
      * Get Multi parts of uri.
+     *
      * @param array $parts
+     *
      * @return array
      */
     public function getMultiParts(
@@ -321,6 +334,7 @@ class Uri implements UriInterface
 
     /**
      * @param array $parts
+     *
      * @return array
      */
     protected function getUriParts(array $parts)
@@ -357,6 +371,7 @@ class Uri implements UriInterface
 
     /**
      * Uses protected user info by default as per rfc3986-3.2.1
+     *
      * @return string
      */
     public function __toString()

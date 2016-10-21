@@ -13,6 +13,7 @@ use InvalidArgumentException;
 
 /**
  * Class AbstractTransport
+ *
  * @package HttpClient
  */
 abstract class AbstractTransport implements TransportInterface
@@ -30,15 +31,18 @@ abstract class AbstractTransport implements TransportInterface
 
     /**
      * Collection request options
+     *
      * @var
      */
     private $options;
 
     /**
      * Make a HTTP GET request.
+     *
      * @param $url
      * @param array $query_params
      * @param array $options
+     *
      * @return array
      */
     public function get($url, $query_params = array(), array $options = array())
@@ -48,9 +52,11 @@ abstract class AbstractTransport implements TransportInterface
 
     /**
      * Make a HTTP POST request.
+     *
      * @param $url
      * @param array $post_params
      * @param array $options
+     *
      * @return array
      */
     public function post($url, $post_params = array(), array $options = array())
@@ -62,16 +68,19 @@ abstract class AbstractTransport implements TransportInterface
      * @param $method
      * @param $uri
      * @param $params
+     *
      * @return mixed
      */
     protected abstract function retrieveResponse($method, UriInterface $uri, $params);
 
     /**
      * Send a request to the server and return a Response object with the response.
+     *
      * @param string $method
      * @param $url
      * @param array $params
      * @param array $options
+     *
      * @return mixed
      */
     public function request($method = self::HTTP_GET, $url, $params = array(), array $options = array())
@@ -99,6 +108,7 @@ abstract class AbstractTransport implements TransportInterface
 
     /**
      * Get the request options
+     *
      * @return Collection
      */
     public function getOptions()
@@ -108,8 +118,10 @@ abstract class AbstractTransport implements TransportInterface
 
     /**
      * Set option value.
+     *
      * @param $option
      * @param null $value
+     *
      * @return $this
      */
     public function setOptions($option, $value = null)
@@ -121,8 +133,10 @@ abstract class AbstractTransport implements TransportInterface
 
     /**
      * Parse the option.
+     *
      * @param $option
      * @param $value
+     *
      * @return array
      */
     protected function parseOption($option, $value)
@@ -132,8 +146,10 @@ abstract class AbstractTransport implements TransportInterface
 
     /**
      * Unite the HTTP headers.
+     *
      * @param array $input
      * @param array $options
+     *
      * @return mixed
      */
     public function uniteHeaders(array $input, $options = null)
@@ -152,7 +168,9 @@ abstract class AbstractTransport implements TransportInterface
 
     /**
      * Split the HTTP headers.
+     *
      * @param $rawHeaders
+     *
      * @return array
      */
     public function splitHeaders($rawHeaders)
@@ -172,8 +190,10 @@ abstract class AbstractTransport implements TransportInterface
 
     /**
      * Get expect options for request.
+     *
      * @param $default
      * @param $options
+     *
      * @return array
      */
     protected function getExpectOptions($default, $options)
@@ -189,6 +209,7 @@ abstract class AbstractTransport implements TransportInterface
 
     /**
      * The Supported for HTTP requests.
+     *
      * @return array
      */
     public function isSupportedHttpRequest()
@@ -196,6 +217,22 @@ abstract class AbstractTransport implements TransportInterface
         return array(
             self::HTTP_GET,
             self::HTTP_POST,
+        );
+    }
+
+    /**
+     * Get default request options.
+     *
+     * @return array
+     */
+    protected function getDefaultOptions()
+    {
+        return array(
+            'timeout' => 30,
+            'verify' => true,
+            'headers' => array(
+                'User-Agent' => 'HttpClient/1.0.0',
+            ),
         );
     }
 }

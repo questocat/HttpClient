@@ -9,8 +9,10 @@ use \HttpClient\Utils\Arr;
 if (!function_exists('array_only')) {
     /**
      * Get a subset of the items from the given array.
+     *
      * @param $array
      * @param $keys
+     *
      * @return array
      */
     function array_only($array, $keys)
@@ -22,6 +24,7 @@ if (!function_exists('array_only')) {
 if (!function_exists('getallheaders')) {
     /**
      * Get all HTTP request header information.
+     *
      * @return mixed
      */
     function getallheaders()

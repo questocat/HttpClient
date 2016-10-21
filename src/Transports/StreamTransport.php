@@ -13,12 +13,14 @@ use RuntimeException;
 
 /**
  * Class StreamTransport
+ *
  * @package HttpClient\Transports
  */
 class StreamTransport extends AbstractTransport
 {
     /**
      * StreamTransport constructor.
+     *
      * @param array $config
      */
     public function __construct(array $config = array())
@@ -32,6 +34,7 @@ class StreamTransport extends AbstractTransport
 
     /**
      * Register request options
+     *
      * @param array $options
      */
     protected function registerOptions(array $options)
@@ -50,9 +53,11 @@ class StreamTransport extends AbstractTransport
 
     /**
      * Send a request to the server and return a Response object with the response.
+     *
      * @param $method
      * @param $uri
      * @param $params
+     *
      * @return bool|string
      * @throws ResponseException
      */
@@ -88,10 +93,12 @@ class StreamTransport extends AbstractTransport
 
     /**
      * Create the stream context for the request.
+     *
      * @param $method
      * @param $headers
      * @param $body
      * @param $options
+     *
      * @return resource
      */
     private function createStreamContext($method, $headers, $body, $options)
@@ -113,6 +120,7 @@ class StreamTransport extends AbstractTransport
 
     /**
      * Method to check if http transport stream available for use.
+     *
      * @return bool
      */
     public function isSupportedTransport()

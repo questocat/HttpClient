@@ -8,12 +8,14 @@ namespace HttpClient\Uri;
 
 /**
  * Class UriFactory
+ *
  * @package HttpClient\Uri
  */
 class UriFactory implements UriFactoryInterface
 {
     /**
      * @param $absoluteUri
+     *
      * @return Uri
      */
     public function createFromAbsolute($absoluteUri)

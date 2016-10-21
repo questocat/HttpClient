@@ -18,6 +18,7 @@ use CURLFile;
 
 /**
  * Class CurlTransport
+ *
  * @package HttpClient\Transports
  */
 class CurlTransport extends AbstractTransport
@@ -32,12 +33,14 @@ class CurlTransport extends AbstractTransport
 
     /**
      * The cURL handle.
+     *
      * @var null|resource
      */
     protected $ch = null;
 
     /**
      * CurlTransport constructor.
+     *
      * @param array $config
      */
     public function __construct(array $config = array())
@@ -62,6 +65,7 @@ class CurlTransport extends AbstractTransport
 
     /**
      * Register request options.
+     *
      * @param array $options
      */
     protected function registerOptions(array $options)
@@ -81,9 +85,11 @@ class CurlTransport extends AbstractTransport
 
     /**
      * Make a HTTP PUT request.
+     *
      * @param $url
      * @param array $put_params
      * @param array $options
+     *
      * @return array
      */
     public function put($url, $put_params = array(), array $options = array())
@@ -93,9 +99,11 @@ class CurlTransport extends AbstractTransport
 
     /**
      * Make a HTTP PATCH request.
+     *
      * @param $url
      * @param array $patch_params
      * @param array $options
+     *
      * @return array
      */
     public function patch($url, $patch_params = array(), array $options = array())
@@ -105,9 +113,11 @@ class CurlTransport extends AbstractTransport
 
     /**
      * Make a HTTP DELETE request.
+     *
      * @param $url
      * @param array $delete_params
      * @param array $options
+     *
      * @return array
      */
     public function delete($url, $delete_params = array(), $options = array())
@@ -117,9 +127,11 @@ class CurlTransport extends AbstractTransport
 
     /**
      * Make a HTTP HEAD request.
+     *
      * @param $url
      * @param array $head_params
      * @param array $options
+     *
      * @return array
      */
     public function head($url, $head_params = array(), $options = array())
@@ -131,6 +143,7 @@ class CurlTransport extends AbstractTransport
      * @param $url
      * @param $method
      * @param $params
+     *
      * @return string
      */
     protected function prepareForUrl($url, $method, &$params)
@@ -147,8 +160,10 @@ class CurlTransport extends AbstractTransport
 
     /**
      * Build HTTP request params.
+     *
      * @param $params
      * @param array $options
+     *
      * @return string
      */
     protected function prepareBuildParams($params, array $options)
@@ -166,9 +181,11 @@ class CurlTransport extends AbstractTransport
 
     /**
      * Send a request to the server and return a Response object with the response.
+     *
      * @param $method
      * @param $uri
      * @param $params
+     *
      * @return array
      * @throws ResponseException
      */
@@ -266,9 +283,11 @@ class CurlTransport extends AbstractTransport
 
     /**
      * Setting cURL option for HTTP POST request.
+     *
      * @param $params
      * @param array $options
      * @param $optionConf
+     *
      * @throws Exception
      */
     private function setPostOptionConf($params, array $options, &$optionConf)
@@ -290,6 +309,7 @@ class CurlTransport extends AbstractTransport
 
     /**
      * Setting cURL option for HTTP PUT request.
+     *
      * @param $params
      * @param array $options
      * @param $optionConf
@@ -310,6 +330,7 @@ class CurlTransport extends AbstractTransport
 
     /**
      * Setting cURL option for HTTP PATCH request.
+     *
      * @param $params
      * @param array $options
      * @param $optionConf
@@ -323,7 +344,9 @@ class CurlTransport extends AbstractTransport
     /**
      * Make curl file.
      * http://php.net/manual/zh/class.curlfile.php
+     *
      * @param $filename
+     *
      * @return \CURLFile|string
      */
     protected function createCurlFile($filename)
@@ -337,6 +360,7 @@ class CurlTransport extends AbstractTransport
 
     /**
      * Do execute cURL.
+     *
      * @return array
      * @throws \Exception
      */
@@ -365,6 +389,7 @@ class CurlTransport extends AbstractTransport
 
     /**
      * Method to check if HTTP transport curl is available for use.
+     *
      * @return bool
      */
     public function isSupportedTransport()
@@ -374,6 +399,7 @@ class CurlTransport extends AbstractTransport
 
     /**
      * The Supported for cURL HTTP requests.
+     *
      * @return array
      */
     public function isSupportedHttpRequest()

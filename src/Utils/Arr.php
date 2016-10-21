@@ -8,14 +8,17 @@ namespace HttpClient\Utils;
 
 /**
  * Class Arr
+ *
  * @package HttpClient\Utils
  */
 class Arr
 {
     /**
      * 从数组返回给定的键值对
+     *
      * @param $array
      * @param $keys
+     *
      * @return array
      * example:
      * $arr = ['id'=>1,'name'=>'bob','age'=>100,'address'=>'china'];
@@ -30,8 +33,10 @@ class Arr
 
     /**
      * 从数组返回给定的键值对以外的键值对
+     *
      * @param $array
      * @param $keys
+     *
      * @return array
      * example:
      * $arr = ['id'=>1,'name'=>'bob','age'=>100,'address'=>'china'];

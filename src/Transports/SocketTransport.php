@@ -15,18 +15,21 @@ use UnexpectedValueException;
 
 /**
  * Class SocketTransport
+ *
  * @package HttpClient\Transports
  */
 class SocketTransport extends AbstractTransport
 {
     /**
      * Reusable socket handles.
+     *
      * @var
      */
     protected $handles;
 
     /**
      * SocketTransport constructor.
+     *
      * @param array $config
      */
     public function __construct(array $config = array())
@@ -40,6 +43,7 @@ class SocketTransport extends AbstractTransport
 
     /**
      * Register request options
+     *
      * @param array $options
      */
     protected function registerOptions(array $options)
@@ -57,9 +61,11 @@ class SocketTransport extends AbstractTransport
 
     /**
      * Send a request to the server and return a Response object with the response.
+     *
      * @param $method
      * @param $uri
      * @param $params
+     *
      * @return Response|mixed|string
      * @throws InvalidResponseCodeException
      */
@@ -114,7 +120,9 @@ class SocketTransport extends AbstractTransport
 
     /**
      * Method to get a response object from a server response.
+     *
      * @param $content
+     *
      * @return Response
      * @throws ResponseException
      */
@@ -146,8 +154,10 @@ class SocketTransport extends AbstractTransport
 
     /**
      * Method to connect to a server and get the resource.
+     *
      * @param UriInterface $uri
      * @param null $timeout
+     *
      * @return mixed
      */
     protected function connect(UriInterface $uri, $timeout = null)
@@ -195,6 +205,7 @@ class SocketTransport extends AbstractTransport
 
     /**
      * Method to check if http transport socket available for use.
+     *
      * @return bool
      */
     public function isSupportedTransport()

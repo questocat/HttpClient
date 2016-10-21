@@ -10,6 +10,7 @@ use InvalidArgumentException;
 
 /**
  * Class HttpManager
+ *
  * @package HttpClient
  */
 class HttpManager
@@ -35,6 +36,7 @@ class HttpManager
 
     /**
      * HttpManager constructor.
+     *
      * @param array $config
      */
     public function __construct(array $config = array())
@@ -44,6 +46,7 @@ class HttpManager
 
     /**
      * @param null $transport
+     *
      * @return mixed
      */
     public function transport($transport = null)
@@ -59,6 +62,7 @@ class HttpManager
 
     /**
      * @param $transport
+     *
      * @return mixed
      */
     protected function createTransport($transport)
@@ -75,8 +79,10 @@ class HttpManager
 
     /**
      * Build a transport instance.
+     *
      * @param $transport
      * @param $config
+     *
      * @return mixed
      */
     protected function buildTransport($transport, $config)

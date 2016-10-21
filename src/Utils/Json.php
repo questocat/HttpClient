@@ -14,6 +14,7 @@ defined('JSON_UNESCAPED_UNICODE') || define('JSON_UNESCAPED_UNICODE', 256);
 /**
  * Class Json
  * from https://github.com/lamjack/php-tools/blob/master/lib/Util/Json.php
+ *
  * @package HttpClient\Utils
  */
 class Json

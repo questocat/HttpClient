@@ -10,12 +10,14 @@ use Exception;
 
 /**
  * Class JsonException
+ *
  * @package HttpClient\Exceptions
  */
 class JsonException extends Exception
 {
     /**
      * The json error messages for php5.3 or earlier.
+     *
      * @var array
      */
     public static $messages = array(

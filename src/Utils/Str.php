@@ -8,13 +8,16 @@ namespace HttpClient\Utils;
 
 /**
  * Class Str
+ *
  * @package HttpClient\Utils
  */
 class Str
 {
     /**
      * Convert a value to studly caps case.
+     *
      * @param $str
+     *
      * @return mixed
      */
     public static function studly($str)

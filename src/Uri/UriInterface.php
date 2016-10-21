@@ -8,6 +8,7 @@ namespace HttpClient\Uri;
 
 /**
  * Interface UriInterface
+ *
  * @package HttpClient\Uri
  */
 interface UriInterface
@@ -54,6 +55,7 @@ interface UriInterface
 
     /**
      * @param $scheme
+     *
      * @return mixed
      */
     public function setScheme($scheme);
@@ -61,36 +63,42 @@ interface UriInterface
     /**
      * @param $user
      * @param null $password
+     *
      * @return mixed
      */
     public function setUserInfo($user, $password = null);
 
     /**
      * @param $host
+     *
      * @return mixed
      */
     public function setHost($host);
 
     /**
      * @param $port
+     *
      * @return mixed
      */
     public function setPort($port);
 
     /**
      * @param $path
+     *
      * @return mixed
      */
     public function setPath($path);
 
     /**
      * @param $query
+     *
      * @return mixed
      */
     public function setQuery($query);
 
     /**
      * @param $fragment
+     *
      * @return mixed
      */
     public function setFragment($fragment);

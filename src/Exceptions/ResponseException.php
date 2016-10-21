@@ -10,6 +10,7 @@ use Exception;
 
 /**
  * Class ResponseException
+ *
  * @package HttpClient\Exceptions
  */
 class ResponseException extends Exception
