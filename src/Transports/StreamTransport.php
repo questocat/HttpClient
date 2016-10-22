@@ -12,9 +12,7 @@ use HttpClient\Uri\UriInterface;
 use RuntimeException;
 
 /**
- * Class StreamTransport
- *
- * @package HttpClient\Transports
+ * Class StreamTransport.
  */
 class StreamTransport extends AbstractTransport
 {

@@ -7,9 +7,7 @@
 namespace HttpClient\Utils;
 
 /**
- * Class Str
- *
- * @package HttpClient\Utils
+ * Class Str.
  */
 class Str
 {

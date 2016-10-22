@@ -7,9 +7,7 @@
 namespace HttpClient\Utils;
 
 /**
- * Class Arr
- *
- * @package HttpClient\Utils
+ * Class Arr.
  */
 class Arr
 {

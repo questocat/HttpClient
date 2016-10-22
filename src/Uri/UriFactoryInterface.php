@@ -7,9 +7,7 @@
 namespace HttpClient\Uri;
 
 /**
- * Interface UriFactoryInterface
- *
- * @package HttpClient\Uri
+ * Interface UriFactoryInterface.
  */
 interface UriFactoryInterface
 {

@@ -9,9 +9,7 @@ namespace HttpClient;
 use InvalidArgumentException;
 
 /**
- * Class HttpManager
- *
- * @package HttpClient
+ * Class HttpManager.
  */
 class HttpManager
 {

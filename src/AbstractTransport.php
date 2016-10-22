@@ -12,9 +12,7 @@ use HttpClient\Utils\Arr;
 use InvalidArgumentException;
 
 /**
- * Class AbstractTransport
- *
- * @package HttpClient
+ * Class AbstractTransport.
  */
 abstract class AbstractTransport implements TransportInterface
 {
@@ -71,7 +69,7 @@ abstract class AbstractTransport implements TransportInterface
      *
      * @return mixed
      */
-    protected abstract function retrieveResponse($method, UriInterface $uri, $params);
+    abstract protected function retrieveResponse($method, UriInterface $uri, $params);
 
     /**
      * Send a request to the server and return a Response object with the response.

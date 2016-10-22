@@ -14,9 +14,7 @@ use RuntimeException;
 use UnexpectedValueException;
 
 /**
- * Class SocketTransport
- *
- * @package HttpClient\Transports
+ * Class SocketTransport.
  */
 class SocketTransport extends AbstractTransport
 {
@@ -99,7 +97,7 @@ class SocketTransport extends AbstractTransport
 
         $headers = array_merge_recursive($headers, $this->uniteHeaders($options['headers']));
 
-        fputs($fp, implode("\r\n", $headers)."\r\n\r\n");
+        fwrite($fp, implode("\r\n", $headers)."\r\n\r\n");
 
         $content = '';
         while (!feof($fp)) {

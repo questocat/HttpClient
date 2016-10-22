@@ -7,9 +7,7 @@
 namespace HttpClient;
 
 /**
- * Interface TransportInterface
- *
- * @package HttpClient
+ * Interface TransportInterface.
  */
 interface TransportInterface
 {

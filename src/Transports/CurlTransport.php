@@ -17,9 +17,7 @@ use Exception;
 use CURLFile;
 
 /**
- * Class CurlTransport
- *
- * @package HttpClient\Transports
+ * Class CurlTransport.
  */
 class CurlTransport extends AbstractTransport
 {

@@ -9,10 +9,7 @@ namespace HttpClient\Uri;
 use InvalidArgumentException;
 
 /**
- * Class Uri
- *
- * @package HttpClient\Uri
- * @link    http://www.faqs.org/rfcs/rfc3986.html
+ * Class Uri.
  */
 class Uri implements UriInterface
 {

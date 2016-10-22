@@ -9,9 +9,7 @@ namespace HttpClient\Exceptions;
 use Exception;
 
 /**
- * Class JsonException
- *
- * @package HttpClient\Exceptions
+ * Class JsonException.
  */
 class JsonException extends Exception
 {

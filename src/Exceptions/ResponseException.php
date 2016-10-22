@@ -9,9 +9,7 @@ namespace HttpClient\Exceptions;
 use Exception;
 
 /**
- * Class ResponseException
- *
- * @package HttpClient\Exceptions
+ * Class ResponseException.
  */
 class ResponseException extends Exception
 {
