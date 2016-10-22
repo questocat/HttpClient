@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  * Author: PhilPu <zhengchaopu@gmail.com>
- * Date: 2016/10/13
+ * Date: 2016/10/13.
  */
 namespace HttpClient\Exceptions;
 
@@ -43,4 +43,5 @@ class JsonException extends Exception
 
         parent::__construct($message, $code, $previous);
     }
+
 }

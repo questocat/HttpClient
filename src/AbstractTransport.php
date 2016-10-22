@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  * Author: PhilPu <zhengchaopu@gmail.com>
- * Date: 2016/10/13
+ * Date: 2016/10/13.
  */
 namespace HttpClient;
 
@@ -17,7 +17,7 @@ use InvalidArgumentException;
 abstract class AbstractTransport implements TransportInterface
 {
     /**
-     * Constants for available HTTP methods
+     * Constants for available HTTP methods.
      */
     const HTTP_GET = 'GET';
     const HTTP_POST = 'POST';
@@ -28,7 +28,7 @@ abstract class AbstractTransport implements TransportInterface
     const VERSION = '1.0.0';
 
     /**
-     * Collection request options
+     * Collection request options.
      *
      * @var
      */
@@ -81,12 +81,12 @@ abstract class AbstractTransport implements TransportInterface
      *
      * @return mixed
      */
-    public function request($method = self::HTTP_GET, $url, $params = array(), array $options = array())
+    public function request($method, $url, $params = array(), array $options = array())
     {
         // Normalize method name
         $method = strtoupper($method);
 
-        if (!in_array($method, $this->isSupportedHttpRequest())) {
+        if (!in_array($method, $this->isSupportedHttpRequest(), true)) {
             throw new InvalidArgumentException("The Http [$method] request not available.");
         }
 
@@ -105,7 +105,7 @@ abstract class AbstractTransport implements TransportInterface
     }
 
     /**
-     * Get the request options
+     * Get the request options.
      *
      * @return Collection
      */
@@ -173,7 +173,7 @@ abstract class AbstractTransport implements TransportInterface
      */
     public function splitHeaders($rawHeaders)
     {
-        $headers = [];
+        $headers = array();
         $headerLines = explode("\n", $rawHeaders);
         $headers['HTTP'] = array_shift($headerLines);
         foreach ($headerLines as $line) {
@@ -233,4 +233,5 @@ abstract class AbstractTransport implements TransportInterface
             ),
         );
     }
+
 }

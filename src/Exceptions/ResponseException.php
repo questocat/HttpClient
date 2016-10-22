@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  * Author: PhilPu <zhengchaopu@gmail.com>
- * Date: 2016/7/25
+ * Date: 2016/7/25.
  */
 namespace HttpClient\Exceptions;
 
@@ -13,5 +13,4 @@ use Exception;
  */
 class ResponseException extends Exception
 {
-
 }

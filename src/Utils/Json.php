@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  * Author: PhilPu <zhengchaopu@gmail.com>
- * Date: 2016/10/7
+ * Date: 2016/10/7.
  */
 namespace HttpClient\Utils;
 
@@ -17,12 +17,12 @@ defined('JSON_UNESCAPED_UNICODE') || define('JSON_UNESCAPED_UNICODE', 256);
 class Json
 {
     /**
-     * Returns array for JSON string
+     * Returns array for JSON string.
      */
     const DECODE_ASSOC = true;
 
     /**
-     * Returns object for JSON string
+     * Returns object for JSON string.
      */
     const DECODE_OBJECT = false;
 
@@ -49,7 +49,7 @@ class Json
         } else {
             $data = version_compare(PHP_VERSION, '5.3.0', '>=') ? @json_encode($data, $options) : @json_encode($data);
             $json_data = preg_replace_callback(
-                "/\\\\u([0-9a-f]{2})([0-9a-f]{2})/iu",
+                '/\\\\u([0-9a-f]{2})([0-9a-f]{2})/iu',
                 create_function(
                     '$pipe',
                     'return iconv(
@@ -64,7 +64,7 @@ class Json
 
         $json_error = json_last_error();
 
-        if ($json_data === false || $json_error != JSON_ERROR_NONE) {
+        if ($json_data === false || $json_error !== JSON_ERROR_NONE) {
             throw new JsonException('Error encoding JSON', $json_error);
         }
 
@@ -98,10 +98,11 @@ class Json
 
         $json_error = json_last_error();
 
-        if (is_null($decoded_data) || $json_error != JSON_ERROR_NONE) {
+        if (is_null($decoded_data) || $json_error !== JSON_ERROR_NONE) {
             throw new JsonException('Error decoding JSON', $json_error);
         }
 
         return $decoded_data;
     }
+
 }

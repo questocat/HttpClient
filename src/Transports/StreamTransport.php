@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  * Author: PhilPu <zhengchaopu@gmail.com>
- * Date: 2016/10/5
+ * Date: 2016/10/5.
  */
 namespace HttpClient\Transports;
 
@@ -31,7 +31,7 @@ class StreamTransport extends AbstractTransport
     }
 
     /**
-     * Register request options
+     * Register request options.
      *
      * @param array $options
      */
@@ -57,6 +57,7 @@ class StreamTransport extends AbstractTransport
      * @param $params
      *
      * @return bool|string
+     *
      * @throws ResponseException
      */
     protected function retrieveResponse($method, UriInterface $uri, $params)
@@ -125,4 +126,5 @@ class StreamTransport extends AbstractTransport
     {
         return function_exists('file_get_contents') && is_callable('file_get_contents');
     }
+
 }

@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  * Author: PhilPu <zhengchaopu@gmail.com>
- * Date: 2016/10/7
+ * Date: 2016/10/7.
  */
 namespace HttpClient\Transports;
 
@@ -40,7 +40,7 @@ class SocketTransport extends AbstractTransport
     }
 
     /**
-     * Register request options
+     * Register request options.
      *
      * @param array $options
      */
@@ -65,6 +65,7 @@ class SocketTransport extends AbstractTransport
      * @param $params
      *
      * @return Response|mixed|string
+     *
      * @throws InvalidResponseCodeException
      */
     protected function retrieveResponse($method, UriInterface $uri, $params)
@@ -122,6 +123,7 @@ class SocketTransport extends AbstractTransport
      * @param $content
      *
      * @return Response
+     *
      * @throws ResponseException
      */
     protected function getResponse($content)
@@ -137,7 +139,7 @@ class SocketTransport extends AbstractTransport
         preg_match('/[0-9]{3}/', array_shift($headers), $matches);
         $code = $matches[0];
         if (is_numeric($code)) {
-            $result->code = (int)$code;
+            $result->code = (int) $code;
         } else {
             throw new ResponseException('No HTTP response code found.');
         }
@@ -154,7 +156,7 @@ class SocketTransport extends AbstractTransport
      * Method to connect to a server and get the resource.
      *
      * @param UriInterface $uri
-     * @param null $timeout
+     * @param null         $timeout
      *
      * @return mixed
      */
@@ -195,7 +197,7 @@ class SocketTransport extends AbstractTransport
         $this->handles[$key] = $fp;
 
         if (isset($timeout)) {
-            stream_set_timeout($this->handles[$key], (int)$timeout);
+            stream_set_timeout($this->handles[$key], (int) $timeout);
         }
 
         return $this->handles[$key];
@@ -210,4 +212,5 @@ class SocketTransport extends AbstractTransport
     {
         return function_exists('fsockopen') && is_callable('fsockopen');
     }
+
 }

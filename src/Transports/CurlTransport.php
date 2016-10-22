@@ -2,19 +2,19 @@
 /**
  * Created by PhpStorm.
  * Author: PhilPu <zhengchaopu@gmail.com>
- * Date: 2016/10/13
+ * Date: 2016/10/13.
  */
 namespace HttpClient\Transports;
 
+use CURLFile;
+use Exception;
 use HttpClient\AbstractTransport;
 use HttpClient\Exceptions\ResponseException;
 use HttpClient\Uri\UriInterface;
 use HttpClient\Utils\Json;
 use HttpClient\Utils\Str;
-use RuntimeException;
 use InvalidArgumentException;
-use Exception;
-use CURLFile;
+use RuntimeException;
 
 /**
  * Class CurlTransport.
@@ -22,7 +22,7 @@ use CURLFile;
 class CurlTransport extends AbstractTransport
 {
     /**
-     * Constants for available cURL HTTP methods
+     * Constants for available cURL HTTP methods.
      */
     const HTTP_PUT = 'PUT';
     const HTTP_PATCH = 'PATCH';
@@ -185,6 +185,7 @@ class CurlTransport extends AbstractTransport
      * @param $params
      *
      * @return array
+     *
      * @throws ResponseException
      */
     protected function retrieveResponse($method, UriInterface $uri, $params)
@@ -201,11 +202,6 @@ class CurlTransport extends AbstractTransport
             CURLOPT_TIMEOUT => $options['timeout'],
         );
 
-        /**
-         * About timeout.
-         * http://zccst.iteye.com/blog/1845958
-         * http://www.cnblogs.com/sky20081816/archive/2013/05/30/3108657.html
-         */
         if (false === $options['verify']) {
             $optionConf[CURLOPT_SSL_VERIFYPEER] = false;
             $optionConf[CURLOPT_SSL_VERIFYHOST] = 0;
@@ -360,6 +356,7 @@ class CurlTransport extends AbstractTransport
      * Do execute cURL.
      *
      * @return array
+     *
      * @throws \Exception
      */
     protected function execCurl()
@@ -368,7 +365,7 @@ class CurlTransport extends AbstractTransport
         $curlInfo = curl_getinfo($this->ch);
         $responseCode = $curlInfo['http_code'];
 
-        if (false === $response || $responseCode != 200) {
+        if (false === $response || $responseCode !== 200) {
             $err_no = curl_errno($this->ch);
             $error = curl_error($this->ch);
 
@@ -411,4 +408,5 @@ class CurlTransport extends AbstractTransport
             self::HTTP_HEAD,
         );
     }
+
 }

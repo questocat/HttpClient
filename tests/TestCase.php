@@ -2,11 +2,9 @@
 
 /**
  * Created by PhpStorm.
- * User: PhilPu
- * Date: 16/10/6
- * Time: 09:02
+ * Author: PhilPu <zhengchaopu@gmail.com>
+ * Date: 2016/10/6.
  */
 class TestCase extends PHPUnit_Framework_TestCase
 {
-
 }

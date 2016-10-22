@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  * Author: PhilPu <zhengchaopu@gmail.com>
- * Date: 2016/7/25
+ * Date: 2016/7/25.
  */
 namespace HttpClient\Uri;
 
@@ -204,7 +204,7 @@ class Uri implements UriInterface
     }
 
     /**
-     * @param $user
+     * @param        $user
      * @param string $pass
      *
      * @return $this
@@ -314,17 +314,18 @@ class Uri implements UriInterface
         array $parts = array('scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment')
     ) {
         $uri = '';
-        $uri .= in_array('scheme', $parts) ? (!empty($this->scheme) ? $this->scheme.'://' : '') : '';
-        $uri .= in_array('user', $parts) ? $this->user : '';
+        $uri .= in_array('scheme', $parts, true) ? (!empty($this->scheme) ? $this->scheme.'://' : '') : '';
+        $uri .= in_array('user', $parts, true) ? $this->user : '';
         $uri .= in_array(
             'pass',
-            $parts
+            $parts,
+            true
         ) ? (!empty($this->pass) ? ':' : '').$this->pass.(!empty($this->user) ? '@' : '') : '';
-        $uri .= in_array('host', $parts) ? $this->host : '';
-        $uri .= in_array('port', $parts) ? (!empty($this->port) ? ':' : '').$this->port : '';
-        $uri .= in_array('path', $parts) ? $this->path : '';
-        $uri .= in_array('query', $parts) ? (!empty($this->query) ? '?'.$this->query : '') : '';
-        $uri .= in_array('fragment', $parts) ? (!empty($this->fragment) ? '#'.$this->fragment : '') : '';
+        $uri .= in_array('host', $parts, true) ? $this->host : '';
+        $uri .= in_array('port', $parts, true) ? (!empty($this->port) ? ':' : '').$this->port : '';
+        $uri .= in_array('path', $parts, true) ? $this->path : '';
+        $uri .= in_array('query', $parts, true) ? (!empty($this->query) ? '?'.$this->query : '') : '';
+        $uri .= in_array('fragment', $parts, true) ? (!empty($this->fragment) ? '#'.$this->fragment : '') : '';
 
         return $uri;
     }
@@ -367,7 +368,7 @@ class Uri implements UriInterface
     }
 
     /**
-     * Uses protected user info by default as per rfc3986-3.2.1
+     * Uses protected user info by default as per rfc3986-3.2.1.
      *
      * @return string
      */
@@ -386,4 +387,5 @@ class Uri implements UriInterface
 
         return $uri;
     }
+
 }

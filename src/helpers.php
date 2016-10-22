@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  * Author: PhilPu <zhengchaopu@gmail.com>
- * Date: 2016/10/16
+ * Date: 2016/10/16.
  */
 use \HttpClient\Utils\Arr;
 
@@ -32,7 +32,7 @@ if (!function_exists('getallheaders')) {
         array_walk(
             $_SERVER,
             function ($value, $name) use (&$headers) {
-                if (substr($name, 0, 5) == 'HTTP_') {
+                if (substr($name, 0, 5) === 'HTTP_') {
                     $headers[str_replace(
                         ' ',
                         '-',

@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  * Author: PhilPu <zhengchaopu@gmail.com>
- * Date: 2016/10/7
+ * Date: 2016/10/7.
  */
 namespace HttpClient\Utils;
 
@@ -24,4 +24,5 @@ class Str
 
         return str_replace(' ', '', $str);
     }
+
 }

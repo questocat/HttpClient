@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  * Author: PhilPu <zhengchaopu@gmail.com>
- * Date: 2016/10/26
+ * Date: 2016/10/26.
  */
 namespace HttpClient\Uri;
 
@@ -20,4 +20,5 @@ class UriFactory implements UriFactoryInterface
     {
         return new Uri($absoluteUri);
     }
+
 }

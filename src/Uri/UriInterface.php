@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  * Author: PhilPu <zhengchaopu@gmail.com>
- * Date: 2016/7/25
+ * Date: 2016/7/25.
  */
 namespace HttpClient\Uri;
 
@@ -59,7 +59,7 @@ interface UriInterface
     public function setScheme($scheme);
 
     /**
-     * @param $user
+     * @param      $user
      * @param null $password
      *
      * @return mixed
@@ -100,4 +100,5 @@ interface UriInterface
      * @return mixed
      */
     public function setFragment($fragment);
+
 }
