@@ -24,4 +24,5 @@ class Str
 
         return str_replace(' ', '', $str);
     }
+
 }

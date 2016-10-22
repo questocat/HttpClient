@@ -408,4 +408,5 @@ class CurlTransport extends AbstractTransport
             self::HTTP_HEAD,
         );
     }
+
 }

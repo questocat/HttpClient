@@ -387,4 +387,5 @@ class Uri implements UriInterface
 
         return $uri;
     }
+
 }

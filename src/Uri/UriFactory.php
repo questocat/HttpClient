@@ -20,4 +20,5 @@ class UriFactory implements UriFactoryInterface
     {
         return new Uri($absoluteUri);
     }
+
 }

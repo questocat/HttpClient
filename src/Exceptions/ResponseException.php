@@ -13,4 +13,5 @@ use Exception;
  */
 class ResponseException extends Exception
 {
+
 }
