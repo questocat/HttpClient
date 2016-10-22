@@ -17,5 +17,4 @@ interface UriFactoryInterface
      * @return mixed
      */
     public function createFromAbsolute($absoluteUri);
-
 }
