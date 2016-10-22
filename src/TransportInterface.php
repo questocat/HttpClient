@@ -15,9 +15,9 @@ interface TransportInterface
      * Send a request to the server and return a Response object with the response.
      *
      * @param string $method
-     * @param $url
-     * @param array $params
-     * @param array $options
+     * @param        $url
+     * @param array  $params
+     * @param array  $options
      *
      * @return mixed
      */
