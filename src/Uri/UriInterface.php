@@ -100,5 +100,4 @@ interface UriInterface
      * @return mixed
      */
     public function setFragment($fragment);
-
 }

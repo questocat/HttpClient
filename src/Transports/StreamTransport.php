@@ -126,5 +126,4 @@ class StreamTransport extends AbstractTransport
     {
         return function_exists('file_get_contents') && is_callable('file_get_contents');
     }
-
 }
