@@ -212,5 +212,4 @@ class SocketTransport extends AbstractTransport
     {
         return function_exists('fsockopen') && is_callable('fsockopen');
     }
-
 }

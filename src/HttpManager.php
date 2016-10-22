@@ -95,5 +95,4 @@ class HttpManager
     {
         throw new InvalidArgumentException('No Http transport was specified.');
     }
-
 }
