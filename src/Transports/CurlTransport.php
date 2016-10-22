@@ -337,7 +337,7 @@ class CurlTransport extends AbstractTransport
 
     /**
      * Make curl file.
-     * http://php.net/manual/zh/class.curlfile.php
+     * http://php.net/manual/zh/class.curlfile.php.
      *
      * @param $filename
      *

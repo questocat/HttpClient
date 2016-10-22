@@ -23,7 +23,7 @@ abstract class AbstractTransport implements TransportInterface
     const HTTP_POST = 'POST';
 
     /**
-     * version
+     * version.
      */
     const VERSION = '1.0.0';
 
