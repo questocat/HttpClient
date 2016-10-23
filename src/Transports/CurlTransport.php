@@ -62,29 +62,26 @@ class CurlTransport extends AbstractTransport
     }
 
     /**
-     * Register request options.
+     * Get default request options.
      *
-     * @param array $options
+     * @return array
      */
-    protected function registerOptions(array $options)
+    protected function getDefaultOptions()
     {
-        $defaults = array(
+        return array(
             'media' => 'json',
             'timeout' => 30,
             'verify' => true,
             'headers' => array(
-                'User-Agent' => 'CurlTransport/1.0.1',
+                'User-Agent' => 'CurlTransport/1.0.0',
             ),
         );
-
-        $options = array_merge_recursive($defaults, $options);
-        $this->setOptions($options);
     }
 
     /**
      * Make a HTTP PUT request.
      *
-     * @param $url
+     * @param       $url
      * @param array $put_params
      * @param array $options
      *
@@ -98,7 +95,7 @@ class CurlTransport extends AbstractTransport
     /**
      * Make a HTTP PATCH request.
      *
-     * @param $url
+     * @param       $url
      * @param array $patch_params
      * @param array $options
      *
@@ -112,7 +109,7 @@ class CurlTransport extends AbstractTransport
     /**
      * Make a HTTP DELETE request.
      *
-     * @param $url
+     * @param       $url
      * @param array $delete_params
      * @param array $options
      *
@@ -126,7 +123,7 @@ class CurlTransport extends AbstractTransport
     /**
      * Make a HTTP HEAD request.
      *
-     * @param $url
+     * @param       $url
      * @param array $head_params
      * @param array $options
      *
@@ -159,7 +156,7 @@ class CurlTransport extends AbstractTransport
     /**
      * Build HTTP request params.
      *
-     * @param $params
+     * @param       $params
      * @param array $options
      *
      * @return string
@@ -240,6 +237,7 @@ class CurlTransport extends AbstractTransport
             $optionConf[CURLOPT_SSLKEY] = $options['ssl_key_path'];
         }
 
+        // Specify settings according to the HTTP method
         $method = 'set'.Str::studly($method).'OptionConf';
 
         if (method_exists($this, $method)) {
@@ -278,9 +276,9 @@ class CurlTransport extends AbstractTransport
     /**
      * Setting cURL option for HTTP POST request.
      *
-     * @param $params
+     * @param       $params
      * @param array $options
-     * @param $optionConf
+     * @param       $optionConf
      *
      * @throws Exception
      */
@@ -304,9 +302,9 @@ class CurlTransport extends AbstractTransport
     /**
      * Setting cURL option for HTTP PUT request.
      *
-     * @param $params
+     * @param       $params
      * @param array $options
-     * @param $optionConf
+     * @param       $optionConf
      */
     private function setPutOptionConf($params, array $options, &$optionConf)
     {
@@ -325,9 +323,9 @@ class CurlTransport extends AbstractTransport
     /**
      * Setting cURL option for HTTP PATCH request.
      *
-     * @param $params
+     * @param       $params
      * @param array $options
-     * @param $optionConf
+     * @param       $optionConf
      */
     private function setPatchOptionConf($params, array $options, &$optionConf)
     {

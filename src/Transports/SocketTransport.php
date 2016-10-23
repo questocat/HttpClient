@@ -40,21 +40,18 @@ class SocketTransport extends AbstractTransport
     }
 
     /**
-     * Register request options.
+     * Get default request options.
      *
-     * @param array $options
+     * @return array
      */
-    protected function registerOptions(array $options)
+    protected function getDefaultOptions()
     {
-        $defaults = array(
+        return array(
             'timeout' => 30,
             'headers' => array(
-                'User-Agent' => 'SocketTransport/1.0.1',
+                'User-Agent' => 'SocketTransport/1.0.0',
             ),
         );
-
-        $options = array_merge_recursive($defaults, $options);
-        $this->setOptions($options);
     }
 
     /**

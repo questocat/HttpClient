@@ -31,22 +31,19 @@ class StreamTransport extends AbstractTransport
     }
 
     /**
-     * Register request options.
+     * Get default request options.
      *
-     * @param array $options
+     * @return array
      */
-    protected function registerOptions(array $options)
+    protected function getDefaultOptions()
     {
-        $defaults = array(
+        return array(
             'timeout' => 30,
             'max_redirects' => 5,
             'headers' => array(
-                'User-Agent' => 'StreamTransport/1.0.1',
+                'User-Agent' => 'StreamTransport/1.0.0',
             ),
         );
-
-        $options = array_merge_recursive($defaults, $options);
-        $this->setOptions($options);
     }
 
     /**

@@ -1,0 +1,10 @@
+preset: symfony
+
+linting: true
+
+enabled:
+  - newline_after_open_tag
+  - long_array_syntax
+  - strict
+  - strict_param
+  - ordered_use

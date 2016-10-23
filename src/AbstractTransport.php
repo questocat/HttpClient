@@ -37,7 +37,7 @@ abstract class AbstractTransport implements TransportInterface
     /**
      * Make a HTTP GET request.
      *
-     * @param $url
+     * @param       $url
      * @param array $query_params
      * @param array $options
      *
@@ -51,7 +51,7 @@ abstract class AbstractTransport implements TransportInterface
     /**
      * Make a HTTP POST request.
      *
-     * @param $url
+     * @param       $url
      * @param array $post_params
      * @param array $options
      *
@@ -75,9 +75,9 @@ abstract class AbstractTransport implements TransportInterface
      * Send a request to the server and return a Response object with the response.
      *
      * @param string $method
-     * @param $url
-     * @param array $params
-     * @param array $options
+     * @param        $url
+     * @param array  $params
+     * @param array  $options
      *
      * @return mixed
      */
@@ -117,7 +117,7 @@ abstract class AbstractTransport implements TransportInterface
     /**
      * Set option value.
      *
-     * @param $option
+     * @param      $option
      * @param null $value
      *
      * @return $this
@@ -219,18 +219,24 @@ abstract class AbstractTransport implements TransportInterface
     }
 
     /**
+     * Register request options.
+     *
+     * @param array $options
+     */
+    protected function registerOptions(array $options)
+    {
+        $defaults = $this->getDefaultOptions();
+        $options = array_merge_recursive($defaults, $options);
+        $this->setOptions($options);
+    }
+
+    /**
      * Get default request options.
      *
      * @return array
      */
     protected function getDefaultOptions()
     {
-        return array(
-            'timeout' => 30,
-            'verify' => true,
-            'headers' => array(
-                'User-Agent' => 'HttpClient/1.0.0',
-            ),
-        );
+        return array();
     }
 }
