@@ -90,7 +90,7 @@ abstract class AbstractTransport implements TransportInterface
             throw new InvalidArgumentException("The Http [$method] request not available.");
         }
 
-        $this->setOptions(array_merge_recursive($this->options, $options));
+        $this->setOptions(array_merge_recursive($this->getOptions(), $options));
 
         if (is_string($url)) {
             $url = new Uri($url);
