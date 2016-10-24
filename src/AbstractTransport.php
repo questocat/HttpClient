@@ -86,13 +86,12 @@ abstract class AbstractTransport implements TransportInterface
         // Normalize method name
         $method = strtoupper($method);
 
-        if (!in_array($method, $this->isSupportedHttpRequest(), true)) {
+        if (!in_array($method, $this->getSupportedHttpRequest(), true)) {
             throw new InvalidArgumentException("The Http [$method] request not available.");
         }
 
         $this->setOptions(array_merge_recursive($this->options, $options));
 
-        // Convert to a Uri object if we were given a string.
         if (is_string($url)) {
             $url = new Uri($url);
         } elseif (!($url instanceof UriInterface)) {
@@ -210,7 +209,7 @@ abstract class AbstractTransport implements TransportInterface
      *
      * @return array
      */
-    public function isSupportedHttpRequest()
+    public function getSupportedHttpRequest()
     {
         return array(
             self::HTTP_GET,

@@ -395,7 +395,7 @@ class CurlTransport extends AbstractTransport
      *
      * @return array
      */
-    public function isSupportedHttpRequest()
+    public function getSupportedHttpRequest()
     {
         return array(
             self::HTTP_GET,

@@ -35,5 +35,5 @@ interface TransportInterface
      *
      * @return mixed
      */
-    public function isSupportedHttpRequest();
+    public function getSupportedHttpRequest();
 }
