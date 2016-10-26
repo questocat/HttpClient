@@ -226,6 +226,7 @@ abstract class AbstractTransport implements TransportInterface
     {
         $defaults = $this->getDefaultOptions();
         $options = array_merge_recursive($defaults, $options);
+
         $this->setOptions($options);
     }
 
