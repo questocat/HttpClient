@@ -68,6 +68,7 @@ class SocketTransport extends AbstractTransport
     protected function retrieveResponse($method, UriInterface $uri, $params)
     {
         $options = $this->getOptions();
+
         $fp = $this->connect($uri, $options['timeout']);
         if (is_resource($fp)) {
             $meta = stream_get_meta_data($fp);

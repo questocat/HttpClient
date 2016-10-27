@@ -188,6 +188,7 @@ class CurlTransport extends AbstractTransport
     protected function retrieveResponse($method, UriInterface $uri, $params)
     {
         $options = $this->getOptions();
+
         $url = $this->prepareForUrl($uri->getAbsoluteUri(), $method, $params);
         $params = $this->prepareBuildParams($params, $options);
 

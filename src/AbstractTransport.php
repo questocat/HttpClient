@@ -28,7 +28,7 @@ abstract class AbstractTransport implements TransportInterface
     const VERSION = '1.0.0';
 
     /**
-     * Collection request options.
+     * Collection transport options.
      *
      * @var
      */
@@ -63,6 +63,8 @@ abstract class AbstractTransport implements TransportInterface
     }
 
     /**
+     * Retrieve the http response.
+     *
      * @param $method
      * @param $uri
      * @param $params
@@ -83,7 +85,6 @@ abstract class AbstractTransport implements TransportInterface
      */
     public function request($method, $url, $params = array(), array $options = array())
     {
-        // Normalize method name
         $method = strtoupper($method);
 
         if (!in_array($method, $this->getSupportedHttpRequest(), true)) {
@@ -104,13 +105,25 @@ abstract class AbstractTransport implements TransportInterface
     }
 
     /**
-     * Get the request options.
+     * Get a transport option.
      *
-     * @return Collection
+     * @param $option
+     *
+     * @return mixed
+     */
+    public function getOption($option)
+    {
+        return $this->options->get($option);
+    }
+
+    /**
+     * Get all transport options.
+     *
+     * @return mixed
      */
     public function getOptions()
     {
-        return $this->options;
+        return $this->options->all();
     }
 
     /**
@@ -123,8 +136,16 @@ abstract class AbstractTransport implements TransportInterface
      */
     public function setOptions($option, $value = null)
     {
-        foreach ($this->parseOption($option, $value) as $option => $value) {
-            $this->options[$option] = $value;
+        $options = $this->parseOption($option, $value);
+
+        if (is_array($options)) {
+            $this->options = new Collection($options);
+        } else {
+            if ($options instanceof Collection) {
+                $this->options = clone $options;
+            } else {
+                throw new InvalidArgumentException('Expected array or Collection.');
+            }
         }
     }
 

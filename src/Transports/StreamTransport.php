@@ -60,6 +60,7 @@ class StreamTransport extends AbstractTransport
     protected function retrieveResponse($method, UriInterface $uri, $params)
     {
         $options = $this->getOptions();
+
         $params = is_array($params) ? http_build_query($params, '', '&') : $params;
 
         // Add the relevant headers.
