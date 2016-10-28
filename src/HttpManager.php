@@ -67,9 +67,9 @@ class HttpManager
     {
         if (isset($this->supportedTransports[$transport])) {
             $transport = $this->supportedTransports[$transport];
-            $transportFullPath = __NAMESPACE__.'\\Transports\\'.$transport.'Transport';
+            $transportClass = __NAMESPACE__.'\\Transports\\'.$transport.'Transport';
 
-            return $this->buildTransport($transportFullPath, $this->config);
+            return $this->buildTransport($transportClass, $this->config);
         }
 
         throw new InvalidArgumentException("Transport [$transport] not supported.");

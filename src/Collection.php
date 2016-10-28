@@ -28,11 +28,11 @@ class Collection implements ArrayAccess, IteratorAggregate, Countable, JsonSeria
     /**
      * Collection constructor.
      *
-     * @param array|null $items
+     * @param array $items
      */
-    public function __construct(array $items = null)
+    public function __construct(array $items = array())
     {
-        if ($items) {
+        if (!empty($items)) {
             $this->items = $items;
         }
     }
@@ -153,6 +153,22 @@ class Collection implements ArrayAccess, IteratorAggregate, Countable, JsonSeria
         }
 
         return false;
+    }
+
+    /**
+     * Merge the collection with the given items.
+     *
+     * @param array $items
+     *
+     * @return static
+     */
+    public function merge(array $items)
+    {
+        foreach ($items as $key => $value) {
+            $this->set($key, $value);
+        }
+
+        return $this;
     }
 
     /**
