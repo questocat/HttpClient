@@ -6,12 +6,12 @@
  */
 namespace HttpClient;
 
-use Countable;
 use ArrayAccess;
-use Serializable;
 use ArrayIterator;
-use JsonSerializable;
+use Countable;
 use IteratorAggregate;
+use JsonSerializable;
+use Serializable;
 
 /**
  * Class Collection.
@@ -124,7 +124,7 @@ class Collection implements ArrayAccess, IteratorAggregate, Countable, JsonSeria
     }
 
     /**
-     * Remove a specific key value pair
+     * Remove a specific key value pair.
      *
      * @param $key
      *
