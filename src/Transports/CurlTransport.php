@@ -156,13 +156,13 @@ class CurlTransport extends AbstractTransport
     /**
      * Build HTTP request params.
      *
-     * @param array $params
+     * @param $params
      *
-     * @return array|mixed|string
+     * @return mixed|string
      */
-    protected function prepareBuildParams(array $params)
+    protected function prepareBuildParams($params)
     {
-        if (!empty($params)) {
+        if (!empty($params) && is_array($params)) {
             $media = $this->getOption('media');
             if ($media === 'json') {
                 $params = Json::encode($params);
