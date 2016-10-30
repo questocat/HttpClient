@@ -156,17 +156,18 @@ class CurlTransport extends AbstractTransport
     /**
      * Build HTTP request params.
      *
-     * @param       $params
-     * @param array $options
+     * @param $params
      *
-     * @return string
+     * @return mixed|string
      */
-    protected function prepareBuildParams($params, array $options)
+    protected function prepareBuildParams($params)
     {
+        $media = $this->getOption('media');
+
         if (!empty($params) && is_array($params)) {
-            if ($options['media'] === 'json') {
+            if ($media === 'json') {
                 $params = Json::encode($params);
-            } elseif ($options['media'] === 'urlencoded') {
+            } elseif ($media === 'urlencoded') {
                 $params = http_build_query($params);
             }
         }
@@ -188,9 +189,8 @@ class CurlTransport extends AbstractTransport
     protected function retrieveResponse($method, UriInterface $uri, $params)
     {
         $options = $this->getOptions();
-
         $url = $this->prepareForUrl($uri->getAbsoluteUri(), $method, $params);
-        $params = $this->prepareBuildParams($params, $options);
+        $params = $this->prepareBuildParams($params);
 
         $optionConf = array(
             CURLOPT_URL => $url,
@@ -242,7 +242,7 @@ class CurlTransport extends AbstractTransport
         $method = 'set'.Str::studly($method).'OptionConf';
 
         if (method_exists($this, $method)) {
-            $this->{$method}($params, $options, $optionConf);
+            $this->{$method}($params, $optionConf);
         }
 
         if ($options['media'] === 'json') {
@@ -277,16 +277,15 @@ class CurlTransport extends AbstractTransport
     /**
      * Setting cURL option for HTTP POST request.
      *
-     * @param       $params
-     * @param array $options
-     * @param       $optionConf
+     * @param $params
+     * @param $optionConf
      *
      * @throws Exception
      */
-    private function setPostOptionConf($params, array $options, &$optionConf)
+    private function setPostOptionConf($params, &$optionConf)
     {
-        if (isset($options['files'])) {
-            $files = $options['files'];
+        $files = $this->getOption('files');
+        if (!empty($files)) {
             if (!is_array($files) || !count($files)) {
                 throw new Exception("Files must be an array and can't be empty");
             }
@@ -303,14 +302,13 @@ class CurlTransport extends AbstractTransport
     /**
      * Setting cURL option for HTTP PUT request.
      *
-     * @param       $params
-     * @param array $options
-     * @param       $optionConf
+     * @param $params
+     * @param $optionConf
      */
-    private function setPutOptionConf($params, array $options, &$optionConf)
+    private function setPutOptionConf($params, &$optionConf)
     {
-        if (isset($options['files'])) {
-            $filename = $options['files'];
+        $filename = $this->getOption('files');
+        if (!empty($filename)) {
             $fp = fopen($filename, 'r');
             $optionConf[CURLOPT_PUT] = true;
             $optionConf[CURLOPT_INFILE] = $fp;
@@ -324,11 +322,10 @@ class CurlTransport extends AbstractTransport
     /**
      * Setting cURL option for HTTP PATCH request.
      *
-     * @param       $params
-     * @param array $options
-     * @param       $optionConf
+     * @param $params
+     * @param $optionConf
      */
-    private function setPatchOptionConf($params, array $options, &$optionConf)
+    private function setPatchOptionConf($params, &$optionConf)
     {
         $optionConf[CURLOPT_POST] = true;
         $optionConf[CURLOPT_POSTFIELDS] = $params;
