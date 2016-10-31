@@ -156,25 +156,27 @@ abstract class AbstractTransport implements TransportInterface
     }
 
     /**
-     * Unite the HTTP headers.
+     * Normalize the HTTP headers.
      *
      * @param array $input
      * @param array $options
      *
      * @return mixed
      */
-    public function uniteHeaders(array $input, $options = null)
+    public function normalizeHeaders(array $input, $options = null)
     {
         $input = $this->getExpectOptions($input, $options);
 
+        $headers = array();
+
         array_walk(
             $input,
-            function ($value, $key) use (&$arr) {
-                $arr[] = $key ? $key.':'.$value : $value;
+            function ($value, $key) use (&$headers) {
+                $headers[] = $key ? $key.':'.$value : $value;
             }
         );
 
-        return $arr;
+        return $headers;
     }
 
     /**
@@ -189,6 +191,7 @@ abstract class AbstractTransport implements TransportInterface
         $headers = array();
         $headerLines = explode("\n", $rawHeaders);
         $headers['HTTP'] = array_shift($headerLines);
+
         foreach ($headerLines as $line) {
             $header = explode(':', $line, 2);
             if (isset($header[1])) {
@@ -197,19 +200,6 @@ abstract class AbstractTransport implements TransportInterface
         }
 
         return $headers;
-    }
-
-    /**
-     * The Supported for HTTP requests.
-     *
-     * @return array
-     */
-    public function getSupportedHttpRequest()
-    {
-        return array(
-            self::HTTP_GET,
-            self::HTTP_POST,
-        );
     }
 
     /**
@@ -272,6 +262,19 @@ abstract class AbstractTransport implements TransportInterface
                 throw new InvalidArgumentException('Expected array or Collection.');
             }
         }
+    }
+
+    /**
+     * The Supported for HTTP requests.
+     *
+     * @return array
+     */
+    public function getSupportedHttpRequest()
+    {
+        return array(
+            self::HTTP_GET,
+            self::HTTP_POST,
+        );
     }
 
     /**

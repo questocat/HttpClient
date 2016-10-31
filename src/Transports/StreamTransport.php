@@ -65,7 +65,7 @@ class StreamTransport extends AbstractTransport
 
         // Add the relevant headers.
         $options['headers']['Content-Length'] = strlen($params);
-        $headers = $this->uniteHeaders($options['headers']);
+        $headers = $this->normalizeHeaders($options['headers']);
 
         $context = $this->createStreamContext($method, $headers, $params, $options);
 
