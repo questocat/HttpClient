@@ -21,7 +21,7 @@ interface TransportInterface
      *
      * @return mixed
      */
-    public function request($method, $url, $params = array(), array $options = array());
+    public function request($method, $url, $params = array(), $options = array());
 
     /**
      * Method to check if http transport curl/socket/stream available for use.

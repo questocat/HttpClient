@@ -21,6 +21,10 @@ abstract class AbstractTransport implements TransportInterface
      */
     const HTTP_GET = 'GET';
     const HTTP_POST = 'POST';
+    const HTTP_PUT = 'PUT';
+    const HTTP_PATCH = 'PATCH';
+    const HTTP_DELETE = 'DELETE';
+    const HTTP_HEAD = 'HEAD';
 
     /**
      * version.
@@ -33,34 +37,6 @@ abstract class AbstractTransport implements TransportInterface
      * @var
      */
     private $options;
-
-    /**
-     * Make a HTTP GET request.
-     *
-     * @param       $url
-     * @param array $query_params
-     * @param array $options
-     *
-     * @return array
-     */
-    public function get($url, $query_params = array(), array $options = array())
-    {
-        return $this->request(self::HTTP_GET, $url, $query_params, $options);
-    }
-
-    /**
-     * Make a HTTP POST request.
-     *
-     * @param       $url
-     * @param array $post_params
-     * @param array $options
-     *
-     * @return array
-     */
-    public function post($url, $post_params = array(), array $options = array())
-    {
-        return $this->request(self::HTTP_POST, $url, $post_params, $options);
-    }
 
     /**
      * Retrieve the http response.
@@ -83,12 +59,16 @@ abstract class AbstractTransport implements TransportInterface
      *
      * @return mixed
      */
-    public function request($method, $url, $params = array(), array $options = array())
+    public function request($method, $url, $params = array(), $options = array())
     {
         $method = strtoupper($method);
 
         if (!in_array($method, $this->getSupportedHttpRequest(), true)) {
             throw new InvalidArgumentException("The Http [$method] request not available.");
+        }
+
+        if (!is_array($options)) {
+            throw new InvalidArgumentException("The optional options must be arrays.");
         }
 
         $this->mergeOptions($options);
@@ -102,6 +82,29 @@ abstract class AbstractTransport implements TransportInterface
         }
 
         return $this->retrieveResponse($method, $url, $params);
+    }
+
+    /**
+     * Magic methods for http request.
+     *
+     * @param $method
+     * @param $args
+     *
+     * @return mixed
+     */
+    public function __call($method, $args)
+    {
+        if (count($args) < 1) {
+            throw new InvalidArgumentException(
+                'Magic request methods require a URI and optional options array'
+            );
+        }
+
+        $uri = $args[0];
+        $params = isset($args[1]) ? $args[1] : [];
+        $opts = isset($args[2]) ? $args[2] : [];
+
+        return $this->request($method, $uri, $params, $opts);
     }
 
     /**

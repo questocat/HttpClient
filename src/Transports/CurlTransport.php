@@ -22,14 +22,6 @@ use RuntimeException;
 class CurlTransport extends AbstractTransport
 {
     /**
-     * Constants for available cURL HTTP methods.
-     */
-    const HTTP_PUT = 'PUT';
-    const HTTP_PATCH = 'PATCH';
-    const HTTP_DELETE = 'DELETE';
-    const HTTP_HEAD = 'HEAD';
-
-    /**
      * The cURL handle.
      *
      * @var null|resource
@@ -76,62 +68,6 @@ class CurlTransport extends AbstractTransport
                 'User-Agent' => 'CurlTransport/1.0.0',
             ),
         );
-    }
-
-    /**
-     * Make a HTTP PUT request.
-     *
-     * @param       $url
-     * @param array $put_params
-     * @param array $options
-     *
-     * @return array
-     */
-    public function put($url, $put_params = array(), array $options = array())
-    {
-        return $this->request(self::HTTP_PUT, $url, $put_params, $options);
-    }
-
-    /**
-     * Make a HTTP PATCH request.
-     *
-     * @param       $url
-     * @param array $patch_params
-     * @param array $options
-     *
-     * @return array
-     */
-    public function patch($url, $patch_params = array(), array $options = array())
-    {
-        return $this->request(self::HTTP_PATCH, $url, $patch_params, $options);
-    }
-
-    /**
-     * Make a HTTP DELETE request.
-     *
-     * @param       $url
-     * @param array $delete_params
-     * @param array $options
-     *
-     * @return array
-     */
-    public function delete($url, $delete_params = array(), $options = array())
-    {
-        return $this->request(self::HTTP_DELETE, $url, $delete_params, $options);
-    }
-
-    /**
-     * Make a HTTP HEAD request.
-     *
-     * @param       $url
-     * @param array $head_params
-     * @param array $options
-     *
-     * @return array
-     */
-    public function head($url, $head_params = array(), $options = array())
-    {
-        return $this->request(self::HTTP_HEAD, $url, $head_params, $options);
     }
 
     /**
