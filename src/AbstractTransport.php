@@ -17,26 +17,16 @@ use InvalidArgumentException;
 abstract class AbstractTransport implements TransportInterface
 {
     /**
-     * Constants for available HTTP methods.
-     */
-    const HTTP_GET = 'GET';
-    const HTTP_POST = 'POST';
-    const HTTP_PUT = 'PUT';
-    const HTTP_PATCH = 'PATCH';
-    const HTTP_DELETE = 'DELETE';
-    const HTTP_HEAD = 'HEAD';
-
-    /**
-     * version.
-     */
-    const VERSION = '1.0.0';
-
-    /**
      * Collection the options.
      *
      * @var
      */
     private $options;
+
+    /**
+     * version.
+     */
+    const VERSION = '1.0.0';
 
     /**
      * Retrieve the http response.
@@ -274,10 +264,7 @@ abstract class AbstractTransport implements TransportInterface
      */
     public function getSupportedHttpRequest()
     {
-        return array(
-            self::HTTP_GET,
-            self::HTTP_POST,
-        );
+        return array('GET', 'POST');
     }
 
     /**
