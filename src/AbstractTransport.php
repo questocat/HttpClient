@@ -58,7 +58,7 @@ abstract class AbstractTransport implements TransportInterface
         }
 
         if (!is_array($options)) {
-            throw new InvalidArgumentException("The optional options must be arrays.");
+            throw new InvalidArgumentException('The optional options must be arrays.');
         }
 
         $this->mergeOptions($options);
@@ -91,8 +91,8 @@ abstract class AbstractTransport implements TransportInterface
         }
 
         $uri = $args[0];
-        $params = isset($args[1]) ? $args[1] : [];
-        $opts = isset($args[2]) ? $args[2] : [];
+        $params = isset($args[1]) ? $args[1] : array();
+        $opts = isset($args[2]) ? $args[2] : array();
 
         return $this->request($method, $uri, $params, $opts);
     }
