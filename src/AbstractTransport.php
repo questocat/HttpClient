@@ -21,12 +21,14 @@ abstract class AbstractTransport implements TransportInterface
      *
      * @var
      */
-    private $options;
+    protected $options;
 
     /**
-     * version.
+     * The Supported for HTTP requests.
+     *
+     * @var array
      */
-    const VERSION = '1.0.0';
+    protected $supportedHttpRequest = array('GET', 'POST');
 
     /**
      * Retrieve the http response.
@@ -53,7 +55,7 @@ abstract class AbstractTransport implements TransportInterface
     {
         $method = strtoupper($method);
 
-        if (!in_array($method, $this->getSupportedHttpRequest(), true)) {
+        if (!in_array($method, $this->supportedHttpRequest, true)) {
             throw new InvalidArgumentException("The Http [$method] request not available.");
         }
 
@@ -255,16 +257,6 @@ abstract class AbstractTransport implements TransportInterface
                 throw new InvalidArgumentException('Expected array or Collection.');
             }
         }
-    }
-
-    /**
-     * The Supported for HTTP requests.
-     *
-     * @return array
-     */
-    public function getSupportedHttpRequest()
-    {
-        return array('GET', 'POST');
     }
 
     /**

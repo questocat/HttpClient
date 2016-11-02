@@ -29,11 +29,4 @@ interface TransportInterface
      * @return mixed
      */
     public function isSupportedTransport();
-
-    /**
-     * The Supported for Http requests.
-     *
-     * @return mixed
-     */
-    public function getSupportedHttpRequest();
 }

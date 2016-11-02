@@ -29,6 +29,13 @@ class CurlTransport extends AbstractTransport
     protected $ch = null;
 
     /**
+     * The Supported for cURL HTTP requests.
+     *
+     * @var array
+     */
+    protected $supportedHttpRequest = array('GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD');
+
+    /**
      * CurlTransport constructor.
      *
      * @param array $config
@@ -79,7 +86,7 @@ class CurlTransport extends AbstractTransport
      */
     protected function prepareForUrl($url, $method, &$params)
     {
-        if (in_array($method, array(self::HTTP_GET, self::HTTP_HEAD, self::HTTP_DELETE), true)) {
+        if (in_array($method, array('GET', 'HEAD', 'DELETE'), true)) {
             if (!empty($params) && is_array($params)) {
                 $url .= (strpos($url, '?') ? '&' : '?').http_build_query($params);
                 $params = array();
@@ -336,15 +343,5 @@ class CurlTransport extends AbstractTransport
     public function isSupportedTransport()
     {
         return function_exists('curl_version') && curl_version();
-    }
-
-    /**
-     * The Supported for cURL HTTP requests.
-     *
-     * @return array
-     */
-    public function getSupportedHttpRequest()
-    {
-        return array('GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD');
     }
 }
