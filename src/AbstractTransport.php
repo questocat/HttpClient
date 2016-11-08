@@ -55,7 +55,7 @@ abstract class AbstractTransport implements TransportInterface
     {
         $method = strtoupper($method);
 
-        if (!in_array($method, $this->supportedHttpRequest, true)) {
+        if (!$this->isSupportedHttpRequest($method)) {
             throw new InvalidArgumentException("The Http [$method] request not available.");
         }
 
@@ -260,12 +260,24 @@ abstract class AbstractTransport implements TransportInterface
     }
 
     /**
-     * Get default the options.
+     * Get the default options.
      *
      * @return array
      */
     protected function getDefaultOptions()
     {
         return array();
+    }
+
+    /**
+     * Method to check that this is a supported HTTP request.
+     *
+     * @param $method
+     *
+     * @return bool
+     */
+    protected function isSupportedHttpRequest($method)
+    {
+        return in_array($method, $this->supportedHttpRequest, true);
     }
 }
