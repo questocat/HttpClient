@@ -4,6 +4,7 @@
  * Author: PhilPu <zhengchaopu@gmail.com>
  * Date: 2016/7/25.
  */
+
 namespace HttpClient\Exceptions;
 
 use Exception;
