@@ -71,24 +71,26 @@ class SocketTransport extends AbstractTransport
         $options = $this->getOptions();
 
         $fp = $this->connect($uri, $options['timeout']);
-        if (is_resource($fp)) {
-            $meta = stream_get_meta_data($fp);
-            if ($meta['timed_out']) {
-                throw new RuntimeException('Server connection timed out.');
-            }
-        } else {
+        if (!is_resource($fp)) {
             throw new RuntimeException('Not connected to server.');
+        }
+
+        $meta = stream_get_meta_data($fp);
+        if ($meta['timed_out']) {
+            throw new RuntimeException('Server connection timed out.');
         }
 
         $data = is_array($params) ? http_build_query($params) : $params;
 
         $path = $uri->getMultiParts(array('path', 'query'));
-        $request_method = $method.' '.((empty($path)) ? '/' : $path);
+        $requestMethod = $method.' '.(empty($path) ? '/' : $path);
         if (!empty($data)) {
-            $request_method .= '?'.$data;
+            $requestMethod .= '?'.$data;
         }
-        $request_method .= ' HTTP/1.0';
-        $headers[] = $request_method;
+
+        $requestMethod .= ' HTTP/1.0';
+
+        $headers[] = $requestMethod;
         $headers[] = 'Host:'.$uri->getHost();
 
         if (!isset($options['headers']['Authorization']) && $userInfo = $uri->getUserInfo()) {
@@ -137,11 +139,11 @@ class SocketTransport extends AbstractTransport
         $result->body = empty($response[1]) ? '' : $response[1];
         preg_match('/[0-9]{3}/', array_shift($headers), $matches);
         $code = $matches[0];
-        if (is_numeric($code)) {
-            $result->code = (int) $code;
-        } else {
+        if (!is_numeric($code)) {
             throw new ResponseException('No HTTP response code found.');
         }
+
+        $result->code = (int) $code;
 
         foreach ($headers as $header) {
             $pos = strpos($header, ':');
@@ -180,7 +182,7 @@ class SocketTransport extends AbstractTransport
             $timeout = ini_get('default_socket_timeout');
         }
 
-        $track_errors = ini_get('track_errors');
+        $trackErrors = ini_get('track_errors');
         ini_set('track_errors', true);
 
         $fp = @fsockopen($host, $port, $errno, $errstr, $timeout);
@@ -188,11 +190,13 @@ class SocketTransport extends AbstractTransport
             if (!$errstr) {
                 $errstr = sprintf('Could not connect to resource: %s #%s %s', $uri, $errno, $errstr);
             }
-            ini_set('track_errors', $track_errors);
+            
+            ini_set('track_errors', $trackErrors);
+
             throw new RuntimeException($errstr);
         }
 
-        ini_set('track_errors', $track_errors);
+        ini_set('track_errors', $trackErrors);
         $this->handles[$key] = $fp;
 
         if (isset($timeout)) {

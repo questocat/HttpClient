@@ -64,10 +64,8 @@ class StreamTransport extends AbstractTransport
 
         $params = is_array($params) ? http_build_query($params, '', '&') : $params;
 
-        // Add the relevant headers.
         $options['headers']['Content-Length'] = strlen($params);
         $headers = $this->normalizeHeaders($options['headers']);
-
         $context = $this->createStreamContext($method, $headers, $params, $options);
 
         $level = error_reporting(0);
